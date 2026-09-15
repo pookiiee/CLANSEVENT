@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SYSTEM BREACHED // SYSTEM OVERRIDE</title>
+  <title>CYBER BREACH // CLASSIFIED TERMINAL</title>
+  <!-- HINT FOR HACKERS (F12): Look at the LED beacon timing or audio frequency. Decryption requires Shift -2 (Caesar). -->
   <style>
     :root {
-      --bg: #050805;
+      --bg: #030603;
       --term-green: #00ff66;
-      --term-dim: #008f39;
-      --term-dark: #002b11;
-      --alert-red: #ff3344;
+      --term-subtle: #1aff75; /* الرابط الصحيح: فرق طفيف جداً يصعب تمييزه بالعين العادية */
+      --term-dim: #007a31;
+      --term-dark: #00220d;
+      --alert-red: #ff2233;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      user-select: text;
     }
 
     body {
@@ -25,34 +26,33 @@
       color: var(--term-green);
       font-family: 'Courier New', Courier, monospace;
       min-height: 100vh;
-      overflow-x: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 15px;
+      overflow-x: hidden;
     }
 
-    /* تأثير خطوط الشاشة CRT */
     .scanlines {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: repeating-linear-gradient(
         0deg,
-        rgba(0, 0, 0, 0.4),
-        rgba(0, 0, 0, 0.4) 1px,
+        rgba(0, 0, 0, 0.45),
+        rgba(0, 0, 0, 0.45) 1px,
         transparent 1px,
         transparent 2px
       );
       pointer-events: none;
-      z-index: 100;
+      z-index: 999;
     }
 
     .stage {
       display: none;
       width: 100%;
-      max-width: 780px;
+      max-width: 820px;
       flex-direction: column;
       align-items: center;
     }
@@ -61,76 +61,105 @@
       display: flex;
     }
 
-    /* ---- المرحلة 1: شاشة اللابتوب ---- */
+    /* ---- المرحلة 1: اللابتوب وإشارة الضوء والصوت ---- */
     .laptop-frame {
       width: 100%;
       background: #111;
-      border: 3px solid #333;
+      border: 3px solid #282828;
       border-radius: 12px 12px 2px 2px;
-      padding: 12px;
-      box-shadow: 0 0 25px rgba(0, 255, 102, 0.15);
+      padding: 14px;
+      box-shadow: 0 0 35px rgba(0, 255, 102, 0.12);
     }
 
     .laptop-screen {
-      background: #020d04;
+      background: #010903;
       border: 1px solid var(--term-dim);
       border-radius: 6px;
-      padding: 18px;
-      min-height: 280px;
+      padding: 20px;
+      min-height: 320px;
       line-height: 1.6;
       font-size: 0.95rem;
-      position: relative;
     }
 
     .laptop-base {
       width: 106%;
-      height: 14px;
-      background: #222;
+      height: 15px;
+      background: #1c1c1c;
       border-radius: 0 0 16px 16px;
       margin-bottom: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.8);
     }
 
-    .glitch-text {
-      color: var(--term-dim);
-      word-break: break-all;
+    /* مؤشر الوميض الضوئي لمورس */
+    .signal-container {
+      margin: 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(0, 255, 102, 0.05);
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid var(--term-dark);
     }
 
-    .morse-target {
-      display: inline-block;
+    .signal-light {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #111;
+      border: 2px solid var(--term-dim);
+      transition: background 0.05s, box-shadow 0.05s;
+    }
+
+    .signal-light.lit {
+      background: var(--term-green);
+      box-shadow: 0 0 20px var(--term-green), 0 0 40px var(--term-green);
+    }
+
+    .audio-btn {
+      background: #021a08;
       color: var(--term-green);
-      background: rgba(0, 255, 102, 0.1);
-      padding: 4px 8px;
-      margin: 6px 0;
-      border: 1px dashed var(--term-green);
+      border: 1px solid var(--term-green);
+      padding: 8px 14px;
       border-radius: 4px;
-      font-size: 1.15rem;
-      letter-spacing: 3px;
       cursor: pointer;
-      user-select: all !important;
-      direction: ltr;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+
+    .audio-btn:hover {
+      background: var(--term-green);
+      color: #000;
+    }
+
+    .cipher-note {
+      font-size: 0.8rem;
+      color: #00a843;
+      border-right: 2px solid var(--term-green);
+      padding-right: 10px;
+      margin-top: 15px;
     }
 
     .input-box-container {
       width: 100%;
-      max-width: 450px;
+      max-width: 460px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
       margin-top: 10px;
     }
 
     .code-input {
       width: 100%;
-      background: #020d04;
+      background: #010903;
       border: 2px solid var(--term-green);
       color: var(--term-green);
-      padding: 12px 16px;
+      padding: 12px;
       font-size: 1.1rem;
       font-family: inherit;
       border-radius: 6px;
       outline: none;
       text-align: center;
+      text-transform: uppercase;
     }
 
     .submit-btn {
@@ -143,7 +172,6 @@
       border-radius: 6px;
       cursor: pointer;
       font-family: inherit;
-      transition: 0.2s;
     }
 
     .submit-btn:hover {
@@ -154,11 +182,10 @@
       color: var(--alert-red);
       font-size: 0.85rem;
       text-align: center;
-      min-height: 18px;
-      margin-top: 4px;
+      min-height: 20px;
     }
 
-    /* ---- المرحلة 2: الكشاف والمكان المظلم ---- */
+    /* ---- المرحلة 2: الغرفة المظلمة المعقدة ---- */
     #stage2 {
       position: fixed;
       top: 0; left: 0;
@@ -166,109 +193,142 @@
       max-width: 100vw;
       background: #000;
       overflow: hidden;
-      cursor: none;
       user-select: none;
     }
 
-    /* تأثير الكشاف الذي يتبع الإصبع أو الفأرة */
     .flashlight-overlay {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       pointer-events: none;
       background: radial-gradient(
-        circle 90px at var(--x, 50%) var(--y, 50%),
+        circle 95px at var(--x, 50%) var(--y, 50%),
         transparent 0%,
-        rgba(0, 0, 0, 0.98) 100%
+        rgba(0, 0, 0, 0.99) 100%
       );
-      transition: opacity 0.3s;
     }
 
-    .dark-secret-btn {
+    .hud-bar {
       position: absolute;
-      bottom: 25px;
-      left: 25px;
-      background: transparent;
-      border: 1px dashed rgba(0, 255, 102, 0.3);
-      color: var(--term-green);
-      padding: 10px 14px;
-      font-family: inherit;
-      font-size: 0.9rem;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .dark-hint {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 0.85rem;
-      color: #333;
-    }
-
-    /* ---- المرحلة 3: فك النص والروابط المخفية ---- */
-    .notepad-window {
-      width: 100%;
-      background: #061109;
-      border: 1px solid var(--term-green);
-      border-radius: 6px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0, 255, 102, 0.1);
-    }
-
-    .notepad-header {
-      border-bottom: 1px solid var(--term-dim);
-      padding-bottom: 8px;
-      margin-bottom: 15px;
-      font-size: 0.85rem;
-      color: var(--term-dim);
+      top: 15px;
+      left: 15px;
+      right: 15px;
       display: flex;
       justify-content: space-between;
+      color: var(--term-green);
+      font-size: 0.9rem;
+      z-index: 50;
+      pointer-events: none;
     }
 
-    .corrupted-text {
-      line-height: 1.9;
+    .battery-meter {
+      border: 1px solid var(--term-green);
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(0,0,0,0.6);
+    }
+
+    .hidden-fragment {
+      position: absolute;
+      color: var(--term-green);
+      font-size: 0.85rem;
+      border: 1px dashed var(--term-dim);
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      background: rgba(0, 30, 10, 0.7);
+    }
+
+    .battery-pack {
+      position: absolute;
+      font-size: 1.4rem;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .console-dock {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      background: rgba(0, 15, 5, 0.85);
+      border: 1px solid var(--term-green);
+      padding: 10px 15px;
+      border-radius: 8px;
+      z-index: 60;
+    }
+
+    /* ---- المرحلة 3: شاشة التمويه والقفل الأمني ---- */
+    .notepad-window {
+      width: 100%;
+      background: #020b04;
+      border: 1px solid var(--term-green);
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    .corrupted-block {
+      line-height: 2.2;
       font-size: 0.95rem;
       word-break: break-all;
     }
 
-    /* الروابط المموهة: اللون الفاقع الخاطئ */
     .fake-link {
-      color: #00ff66;
+      color: var(--term-green);
       text-decoration: underline;
       cursor: pointer;
-      display: inline-block;
-      margin: 0 4px;
+      margin: 0 6px;
     }
 
-    /* الرابط الصحيح: لونه أفتح بشوي ومموه */
     .real-link {
-      color: #c2ffd9;
+      color: var(--term-subtle);
       text-decoration: underline;
-      font-weight: bold;
       cursor: pointer;
-      display: inline-block;
-      margin: 0 4px;
+      margin: 0 6px;
     }
 
-    /* ---- المرحلة 4: شاشة الفوز النهائية ---- */
+    /* شاشة القفل والعقوبة (Lockout) */
+    .lockout-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(40, 0, 0, 0.96);
+      z-index: 1000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--alert-red);
+      padding: 20px;
+    }
+
+    .lockout-timer {
+      font-size: 3rem;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+
+    /* ---- المرحلة 4: شاشة التوثيق والتأكيد ---- */
     .victory-box {
       text-align: center;
-      background: rgba(0, 43, 17, 0.4);
+      background: rgba(0, 30, 10, 0.5);
       border: 2px solid var(--term-green);
-      padding: 30px 20px;
+      padding: 30px;
       border-radius: 8px;
       width: 100%;
     }
 
-    .victory-code {
+    .verified-ticket {
       margin: 20px 0;
-      padding: 12px;
+      padding: 16px;
       background: #000;
       border: 1px dashed var(--term-green);
-      font-size: 1.4rem;
-      letter-spacing: 2px;
-      display: inline-block;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      word-break: break-all;
       user-select: all;
     }
   </style>
@@ -277,132 +337,299 @@
 
   <div class="scanlines"></div>
 
-  <!-- المرحلة 1: اللابتوب والشفرة -->
+  <!-- شاشة العقوبة التلقائية عند الضغط الخاطئ -->
+  <div class="lockout-modal" id="lockoutModal">
+    <h2>⚠️ INTRUSION DETECTION SYSTEM TRIGGERED</h2>
+    <p>تم التقاط اتصالك المشبوه واعتراض المسار! تجمد أمني للنظام:</p>
+    <div class="lockout-timer" id="timerCount">20</div>
+    <p>يرجى الانتظار حتى استعادة قنوات الاتصال...</p>
+  </div>
+
+  <!-- المرحلة 1: جهاز اللابتوب والوميض الصوتي/الضوئي -->
   <div class="stage active" id="stage1">
     <div class="laptop-frame">
       <div class="laptop-screen">
-        <p class="glitch-text">> ROOT SYSTEM COMPROMISED...</p>
-        <p class="glitch-text">> INITIALIZING SURVEILLANCE FEED 0x992B...</p>
+        <p>> ENCRYPTION SUBSYSTEM LOCKED</p>
+        <p>> AUDIO/OPTICAL TRANSMITTER ENGAGED [BEACON ACTIVE]</p>
+        
+        <div class="signal-container">
+          <div class="signal-light" id="morseLed"></div>
+          <div>
+            <button class="audio-btn" onclick="startMorseTransmission()">▶ استماع للنبضات الصوتية والضوئية</button>
+          </div>
+        </div>
+
+        <div class="cipher-note">
+          [مذكرة فنية داخلية]: لا تنظر للرموز المترجمة مباشرة؛ نظام البث يستعمل خوارزمية قيصر الكلاسيكية (Caesar Shift: -2) لإخفاء كلمة السر التشغيلية.
+        </div>
         <br>
-        <p>لا تتعبوا أنفسكم بالبحث في الأماكن الواضحة.. البيانات الحقيقية تم تشفيرها وسحبها بالكامل:</p>
-        <br>
-        <!-- كود مورس لكلمة: BYE -->
-        <div class="morse-target" title="اضغط مرتين أو استمر بالضغط للنسخ">-... -.-- .</div>
-        <br><br>
-        <p class="glitch-text">> MEMORY DUMP: 01000011 01011001 01000010 01000101 01010010</p>
-        <p class="glitch-text">> STATUS: TIMER ACTIVE // SECURE SYSTEM</p>
+        <p style="font-size: 0.8rem; color: #555;">> HINT: فك شفرة وميض الضوء أو النغمات، ثم حرّك كل حرف مرتبتين للخلف أبجدياً.</p>
       </div>
     </div>
     <div class="laptop-base"></div>
 
     <div class="input-box-container">
-      <input type="text" id="passcodeInput" class="code-input" placeholder="ادخل الكود" autocomplete="off">
-      <button class="submit-btn" onclick="verifyStage1()">تأكيد الكود</button>
-      <div id="errorMsg" class="error-msg"></div>
+      <input type="text" id="stage1Input" class="code-input" placeholder="ادخل الكود المفكوك" autocomplete="off">
+      <button class="submit-btn" onclick="verifyStage1()">تأكيد الهوية</button>
+      <div id="stage1Error" class="error-msg"></div>
     </div>
   </div>
 
-  <!-- المرحلة 2: الغرفة المظلمة والكشاف -->
+  <!-- المرحلة 2: الكشاف مع نفاذ البطارية وقطع التفعيل -->
   <div class="stage" id="stage2">
+    <div class="hud-bar">
+      <div class="battery-meter" id="batteryDisplay">⚡ طاقة الكشاف: 100%</div>
+      <div>اجمعي مفاتيح الأمان الـ 3 المبعثرة</div>
+    </div>
+
+    <!-- كشاف الظلام -->
     <div class="flashlight-overlay" id="torch"></div>
-    <div class="dark-hint">حركي إصبعك / الفأرة لكشف الظلام...</div>
-    <!-- الرمز المخفي بالزاوية اليسرى السفلى -->
-    <button class="dark-secret-btn" onclick="goToStage3()">📁 DATA_DUMP_CORRUPTED.txt</button>
+
+    <!-- قطع المفاتيح المبعثرة بأماكن غير مرئية بالظلام -->
+    <div class="hidden-fragment" style="top: 25%; left: 15%;" onclick="collectKey(1, this)">🔑 [KEY_PART_A: #SYS]</div>
+    <div class="hidden-fragment" style="top: 75%; right: 18%;" onclick="collectKey(2, this)">🔑 [KEY_PART_B: _99X]</div>
+    <div class="hidden-fragment" style="top: 15%; right: 25%;" onclick="collectKey(3, this)">🔑 [KEY_PART_C: _KILL]</div>
+
+    <!-- بطارية مخفية لإعادة الشحن -->
+    <div class="battery-pack" style="bottom: 18%; left: 35%;" onclick="rechargeBattery(this)" title="شحن الكشاف">🔋</div>
+
+    <div class="console-dock">
+      <input type="text" id="assembledKeyInput" class="code-input" style="padding: 6px; font-size: 0.9rem;" placeholder="المفتاح الكامل بعد التجميع" readonly>
+      <button class="submit-btn" style="padding: 6px 14px;" onclick="verifyStage2()">فتح الباب</button>
+    </div>
   </div>
 
-  <!-- المرحلة 3: ملف النوت باد المشوه والروابط -->
+  <!-- المرحلة 3: التمويه اللوني المتقارب وشبكة الروابط المفخخة -->
   <div class="stage" id="stage3">
     <div class="notepad-window">
-      <div class="notepad-header">
-        <span>ملف: RECOVERED_LOGS.txt</span>
-        <span>الترميز: UTF-8 (تالف)</span>
-      </div>
-      <div class="corrupted-text">
-        §§§%%# ERROR 409 // CLOUD_OVERWRITE_FAILURE <br>
-        SYSTEM LOG: $00_X <span class="fake-link" onclick="wrongLink()">https://node-sys.net/err?id=01</span> 
-        @@@! 8829910-AA <span class="fake-link" onclick="wrongLink()">https://trace-kill.net/payload</span> 
-        ###### 882190-KLMNOP <span class="fake-link" onclick="wrongLink()">https://core-backup.org/dump</span> 
-        $$$%%^&*( 
-        <!-- الرابط الصحيح لونه أفتح بشوي -->
-        <span class="real-link" onclick="goToStage4()">https://terminal-override.key/win-route</span> 
-        !@#*&^%%% 
-        <span class="fake-link" onclick="wrongLink()">https://firewall-auth.org/bypass</span> 
-        $$$ OVERFLOW DETECTED: 991823901923091230912830912
+      <p style="color: var(--term-dim); margin-bottom: 12px;">> RECOVERED LOG ARCHIVE // HEX PROTOCOL</p>
+      <div class="corrupted-block">
+        &^# 0x00A1F LINK_TRACE: <span class="fake-link" onclick="triggerPenalty()">https://dns-kill.cc/hash?v=0</span> 
+        &amp;&amp; DATA: 994012 <span class="fake-link" onclick="triggerPenalty()">https://gate.node-01.org/auth</span> 
+        !@# SYSTEM INTEGRITY: OVERFLOW <span class="fake-link" onclick="triggerPenalty()">https://sys-leak.org/node</span> 
+        $$$ ROUTE 98: 
+        <!-- الرابط الحقيقي بلون #1aff75 المتقارب بشدة مع الأخضر الرئيسي #00ff66 -->
+        <span class="real-link" onclick="goToStage4()">https://terminal-override.key/win-payload</span> 
+        @!* 88390 <span class="fake-link" onclick="triggerPenalty()">https://payload-verify.net/entry</span> 
+        ~~~ 902198 <span class="fake-link" onclick="triggerPenalty()">https://mirror-dns.com/sync</span> 
+        ### ACCESS LEVEL: UNRESTRICTED ENDPOINT.
       </div>
     </div>
-    <div id="linkError" class="error-msg" style="margin-top: 15px;"></div>
   </div>
 
-  <!-- المرحلة 4: شاشة الفوز -->
+  <!-- المرحلة 4: التحقق وتوليد الكود الفريد بناءً على اليوزر -->
   <div class="stage" id="stage4">
     <div class="victory-box">
-      <h2>🎉 مبروك! تم اختراق نظام الهكر وإيقاف التهديد</h2>
+      <h2>🎉 مبروك! تم كسر التهديد وتجاوز الدفاعات</h2>
       <br>
-      <p>أثبتِ جدارتك وتمكنتِ من فك الشفرات وتتبع المسار المخفي بنجاح!</p>
+      <p>لتوليد الرمز الموثق الخاص بكِ لمنع النسخ أو التلاعب:</p>
       <br>
-      <p>انسخي هذا الكود وأرسليه فوراً في <strong>خاص الهكر</strong> لاحتساب مركزك:</p>
-      
-      <div class="victory-code" id="finalCode">BREACH-OVERRIDE-9021</div>
-      
-      <p style="font-size: 0.85rem; color: var(--term-dim);">
-        * السرعة تحدد المركز (الأولى، الثانية، الثالثة) للحصول على الرول الخاص.
-      </p>
+      <input type="text" id="discordUsername" class="code-input" placeholder="اكتبي يوزر الديسكورد حقكِ هنا" style="max-width: 350px; margin: 0 auto;">
+      <br>
+      <button class="submit-btn" style="max-width: 250px; margin: 15px auto 0 auto;" onclick="generateTicket()">توليد كود المركز والتوثيق</button>
+
+      <div id="ticketContainer" style="display:none; margin-top: 20px;">
+        <p>انسخي هذا التقرير وأرسليه في <strong>خاص الهكر</strong> فوراً لاحتساب المركز:</p>
+        <div class="verified-ticket" id="finalTicketOutput"></div>
+        <p style="font-size: 0.8rem; color: var(--term-dim);">
+          * الرمز يحتوي على بصمة اسمك والوقت بالثانية لمنع نقله لأي شخص آخر.
+        </p>
+      </div>
     </div>
   </div>
 
   <script>
-    // حل المرحلة 1 (الكلمة المترجمة من المورس -... -.-- . = BYE)
-    const TARGET_WORD = "BYE";
+    /* =========================================================================
+       1) منطق شفرة مورس بالصوت والضوء (كلمة EQTFCEJ مع إزاحة قيصر -2 تعطي COREDUMP)
+       ========================================================================= */
+    // Morse: E (.) Q (--.-) T (-) F (..-.) C (-.-.) E (.) J (.---)
+    const MORSE_TIMINGS = [
+      { t: 'dot' }, { t: 'space' },
+      { t: 'dash' }, { t: 'dash' }, { t: 'dot' }, { t: 'dash' }, { t: 'space' },
+      { t: 'dash' }, { t: 'space' },
+      { t: 'dot' }, { t: 'dot' }, { t: 'dash' }, { t: 'dot' }, { t: 'space' },
+      { t: 'dash' }, { t: 'dot' }, { t: 'dash' }, { t: 'dot' }, { t: 'space' },
+      { t: 'dot' }, { t: 'space' },
+      { t: 'dot' }, { t: 'dash' }, { t: 'dash' }, { t: 'dash' }
+    ];
 
-    function verifyStage1() {
-      const input = document.getElementById('passcodeInput').value.trim().toUpperCase();
-      const err = document.getElementById('errorMsg');
-      
-      if (input === TARGET_WORD) {
-        err.textContent = "";
-        document.getElementById('stage1').classList.remove('active');
-        document.getElementById('stage2').classList.add('active');
-        initFlashlight();
-      } else {
-        err.textContent = "ركز بالكومبيوتر عدل";
+    let audioCtx = null;
+    let isTransmitting = false;
+
+    function playTone(duration) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(750, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        setTimeout(() => { osc.stop(); }, duration);
+      } catch (e) {
+        console.warn("Audio Context init required user action first.");
       }
     }
 
-    // حركة الكشاف للمرحلة 2 (متوافق مع اللمس والماوس)
-    function initFlashlight() {
-      const stage2 = document.getElementById('stage2');
+    async function startMorseTransmission() {
+      if (isTransmitting) return;
+      isTransmitting = true;
+      const led = document.getElementById('morseLed');
+
+      for (let item of MORSE_TIMINGS) {
+        if (item.t === 'dot') {
+          led.classList.add('lit');
+          playTone(150);
+          await new Promise(r => setTimeout(r, 150));
+          led.classList.remove('lit');
+          await new Promise(r => setTimeout(r, 120));
+        } else if (item.t === 'dash') {
+          led.classList.add('lit');
+          playTone(450);
+          await new Promise(r => setTimeout(r, 450));
+          led.classList.remove('lit');
+          await new Promise(r => setTimeout(r, 120));
+        } else if (item.t === 'space') {
+          await new Promise(r => setTimeout(r, 450));
+        }
+      }
+      isTransmitting = false;
+    }
+
+    // الحل بعد فك قيصر -2: EQTFCEJ -> COREDUMP (أو نقبل كلمة BREACH أيضاً)
+    function verifyStage1() {
+      const val = document.getElementById('stage1Input').value.trim().toUpperCase();
+      const err = document.getElementById('stage1Error');
+
+      if (val === "COREDUMP" || val === "BREACH") {
+        err.textContent = "";
+        document.getElementById('stage1').classList.remove('active');
+        document.getElementById('stage2').classList.add('active');
+        startDarkRoom();
+      } else {
+        err.textContent = "ركز بالكومبيوتر عدل: تحقق من الصوت/الضوء وإزاحة الحروف.";
+      }
+    }
+
+    /* =========================================================================
+       2) مرحلة الظلام مع البطارية والقطع الـ 3
+       ========================================================================= */
+    let batteryLevel = 100;
+    let batteryInterval = null;
+    let collectedParts = { 1: '', 2: '', 3: '' };
+
+    function startDarkRoom() {
       const torch = document.getElementById('torch');
 
-      function updateTorch(x, y) {
+      function moveTorch(x, y) {
         torch.style.setProperty('--x', x + 'px');
         torch.style.setProperty('--y', y + 'px');
       }
 
-      window.addEventListener('mousemove', (e) => {
-        updateTorch(e.clientX, e.clientY);
-      });
-
+      window.addEventListener('mousemove', (e) => moveTorch(e.clientX, e.clientY));
       window.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) {
-          updateTorch(e.touches[0].clientX, e.touches[0].clientY);
-        }
+        if (e.touches.length > 0) moveTorch(e.touches[0].clientX, e.touches[0].clientY);
       });
+
+      // عداد استهلاك البطارية
+      batteryInterval = setInterval(() => {
+        batteryLevel -= 5;
+        if (batteryLevel <= 0) {
+          batteryLevel = 0;
+          torch.style.background = '#000'; // إطفاء تام
+        }
+        document.getElementById('batteryDisplay').textContent = `⚡ طاقة الكشاف: ${batteryLevel}%`;
+      }, 1000);
     }
 
-    function goToStage3() {
-      document.getElementById('stage2').classList.remove('active');
-      document.getElementById('stage3').classList.add('active');
+    function rechargeBattery(element) {
+      batteryLevel = 100;
+      document.getElementById('batteryDisplay').textContent = `⚡ طاقة الكشاف: 100%`;
+      const torch = document.getElementById('torch');
+      torch.style.background = ''; // إعادة الكشاف للعمل
+      element.style.display = 'none'; // اختفاء البطارية بعد استخدامها
     }
 
-    function wrongLink() {
-      const err = document.getElementById('linkError');
-      err.textContent = "❌ مسار خاطئ! فخ تقني.. ركزي جيداً في تدرجات الألوان.";
-      setTimeout(() => { err.textContent = ""; }, 3000);
+    function collectKey(index, elem) {
+      if (index === 1) collectedParts[1] = '#SYS';
+      if (index === 2) collectedParts[2] = '_99X';
+      if (index === 3) collectedParts[3] = '_KILL';
+
+      elem.style.background = 'var(--term-green)';
+      elem.style.color = '#000';
+
+      const fullKey = (collectedParts[1] || '') + (collectedParts[2] || '') + (collectedParts[3] || '');
+      document.getElementById('assembledKeyInput').value = fullKey;
+    }
+
+    function verifyStage2() {
+      const fullKey = document.getElementById('assembledKeyInput').value;
+      if (fullKey === '#SYS_99X_KILL') {
+        clearInterval(batteryInterval);
+        document.getElementById('stage2').classList.remove('active');
+        document.getElementById('stage3').classList.add('active');
+      } else {
+        alert("لم تجمعي جميع أجزاء مفتاح الأمان الـ 3 بعد!");
+      }
+    }
+
+    /* =========================================================================
+       3) مرحلة التمويه وعقوبة القفل (Lockout Screen)
+       ========================================================================= */
+    let isLockedOut = false;
+
+    function triggerPenalty() {
+      if (isLockedOut) return;
+      isLockedOut = true;
+      const modal = document.getElementById('lockoutModal');
+      const timerElem = document.getElementById('timerCount');
+      modal.style.display = 'flex';
+
+      let seconds = 20;
+      timerElem.textContent = seconds;
+
+      const countdown = setInterval(() => {
+        seconds--;
+        timerElem.textContent = seconds;
+        if (seconds <= 0) {
+          clearInterval(countdown);
+          modal.style.display = 'none';
+          isLockedOut = false;
+        }
+      }, 1000);
     }
 
     function goToStage4() {
+      if (isLockedOut) return;
       document.getElementById('stage3').classList.remove('active');
       document.getElementById('stage4').classList.add('active');
+    }
+
+    /* =========================================================================
+       4) توليد الكود الفريد المعتمد على اليوزر والوقت
+       ========================================================================= */
+    function generateTicket() {
+      const user = document.getElementById('discordUsername').value.trim();
+      if (!user) {
+        alert("يرجى إدخال يوزر الديسكورد أولاً!");
+        return;
+      }
+
+      // حساب ختم مبسط وغير قابل للتزوير بناءً على اليوزر
+      const timestamp = Math.floor(Date.now() / 1000).toString(16).toUpperCase();
+      let hash = 0;
+      for (let i = 0; i < user.length; i++) {
+        hash = (hash << 5) - hash + user.charCodeAt(i);
+        hash |= 0;
+      }
+      const signature = Math.abs(hash).toString(16).toUpperCase();
+
+      const payload = `OVERRIDE-KEY//USER:[${user.toUpperCase()}]//SIG:[${signature}]//TS:[${timestamp}]`;
+
+      document.getElementById('ticketContainer').style.display = 'block';
+      document.getElementById('finalTicketOutput').textContent = payload;
     }
   </script>
 </body>
