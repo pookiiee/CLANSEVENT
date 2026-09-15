@@ -13,11 +13,7 @@
       --alert: #ff2233;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 100%;
@@ -37,7 +33,6 @@
       position: relative;
     }
 
-    /* زر الصوت */
     .audio-toggle-btn {
       position: fixed;
       top: 15px;
@@ -56,12 +51,10 @@
 
     #matrixCanvas {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       z-index: 0;
-      opacity: 0.3;
+      opacity: 0.28;
       pointer-events: none;
     }
 
@@ -83,8 +76,7 @@
     .lockout-screen {
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100vw; height: 100vh;
       background: rgba(15, 2, 4, 0.98);
       color: var(--alert);
       display: none;
@@ -175,9 +167,7 @@
       margin: 0 auto;
     }
 
-    .stage.active {
-      display: flex;
-    }
+    .stage.active { display: flex; }
 
     .laptop-frame {
       width: 100%;
@@ -194,7 +184,7 @@
       border: 1px solid var(--term-dim);
       border-radius: 6px;
       padding: 20px;
-      min-height: 300px;
+      min-height: 280px;
       line-height: 1.7;
       font-size: 0.95rem;
       text-align: right;
@@ -227,16 +217,8 @@
       direction: ltr;
     }
 
-    .morse-code {
-      font-size: 1.05rem;
-      letter-spacing: 3px;
-      user-select: all;
-    }
-
-    .morse-tag {
-      font-size: 0.8rem;
-      color: var(--term-dim);
-    }
+    .morse-code { font-size: 1.05rem; letter-spacing: 3px; user-select: all; }
+    .morse-tag { font-size: 0.8rem; color: var(--term-dim); }
 
     .input-wrapper {
       width: 100%;
@@ -289,13 +271,11 @@
       min-height: 18px;
     }
 
-    /* ---- المرحلة 2: ضبط التوسيط للغرفة المظلمة ولوحة الإدخال ---- */
+    /* المرحلة 2: الغرفة المظلمة */
     #stage2 {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: #000;
       overflow: hidden;
       cursor: crosshair;
@@ -307,16 +287,12 @@
       padding-bottom: 45px;
     }
 
-    #stage2.active {
-      display: flex !important;
-    }
+    #stage2.active { display: flex !important; }
 
     .dark-room-content {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background: #000;
       -webkit-mask-image: radial-gradient(circle 95px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
       mask-image: radial-gradient(circle 95px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
@@ -351,7 +327,7 @@
       margin: 0 auto;
     }
 
-    /* المرحلة 3 */
+    /* المرحلة 3: الباينري */
     .binary-stream {
       background: #010602;
       border: 1px solid var(--term-dim);
@@ -366,7 +342,46 @@
       width: 100%;
     }
 
-    /* المرحلة 4 */
+    /* المرحلة 5: الصناديق العشرة */
+    .boxes-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+      width: 100%;
+    }
+
+    .vault-box {
+      background: rgba(0, 20, 10, 0.85);
+      border: 2px dashed var(--term-dim);
+      border-radius: 6px;
+      padding: 15px 5px;
+      text-align: center;
+      cursor: not-allowed;
+      transition: 0.3s;
+      user-select: none;
+      opacity: 0.5;
+    }
+
+    .vault-box.unlocked {
+      cursor: pointer;
+      opacity: 1;
+      border: 2px solid var(--term);
+      box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+    }
+
+    .vault-box.unlocked:hover {
+      background: rgba(0, 255, 102, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .vault-box.opened {
+      border-color: #ffd700;
+      color: #ffd700;
+      background: rgba(255, 215, 0, 0.1);
+    }
+
+    /* المرحلة 6: التيرمينال */
     .cli-box {
       width: 100%;
       background: #010803;
@@ -405,7 +420,7 @@
       font-size: 0.95rem;
     }
 
-    /* المرحلة 5 */
+    /* المرحلة 7: الروابط */
     .notepad {
       background: rgba(2, 12, 5, 0.9);
       border: 2px solid var(--term-dim);
@@ -425,7 +440,7 @@
       margin: 0 4px;
     }
 
-    /* المرحلة 6 */
+    /* لوحة النهاية */
     .victory-container {
       background: rgba(0, 25, 10, 0.6);
       border: 2px solid var(--term);
@@ -440,8 +455,7 @@
     }
 
     .svg-icon {
-      width: 20px;
-      height: 20px;
+      width: 20px; height: 20px;
       vertical-align: middle;
       fill: currentColor;
       display: inline-block;
@@ -474,7 +488,7 @@
       </div>
     </div>
 
-    <!-- المرحلة 1 -->
+    <!-- المرحلة 1: شفرات المورس -->
     <div class="stage active" id="stage1">
       <div class="laptop-frame">
         <div class="laptop-screen">
@@ -516,8 +530,69 @@
       </div>
     </div>
 
-    <!-- المرحلة 4: التيرمينال -->
+    <!-- المرحلة 4: فحص الكود المصدري Inspect Element -->
     <div class="stage" id="stage4">
+      <div class="laptop-frame">
+        <div class="laptop-screen">
+          <p>> DOM INTEGRITY LOCK ACTIVATED.</p>
+          <p>> تم إخفاء مفتاح التجاوز داخل هيكل وكواليس الموقع (DOM Structure).</p>
+          <br>
+          <p style="color: #ffd700;">// تلميح: المفتاح لا يظهر على هذه الشاشة.. افتحي أدوات المطور (Inspect Element / F12) وابحثي في كود الـ HTML الداخلي!</p>
+          
+          <!-- الكود المخفي المطلوب نسخه من نافذة Inspect -->
+          <!-- ================================================= -->
+          <!-- SECRET DOM ACCESS KEY FOUND: DOM_BYPASS_99 -->
+          <!-- ================================================= -->
+        </div>
+      </div>
+      <div class="laptop-base"></div>
+      <div class="input-wrapper">
+        <input type="text" id="stage4Input" class="cyber-input" placeholder="المفتاح المستخرج من الكود" autocomplete="off" oninput="soundTyping()">
+        <button class="action-btn" onclick="verifyStage4()">تأكيد المفتاح المصدري</button>
+        <div id="stage4Err" class="error-msg"></div>
+      </div>
+    </div>
+
+    <!-- المرحلة 5: الصناديق العشرة ولغز روم الديسكورد -->
+    <div class="stage" id="stage5">
+      <div class="laptop-frame">
+        <div class="laptop-screen">
+          <p>> DISCORD VAULT PROTOCOL DETECTED.</p>
+          <p>> يوجد 10 صناديق إلكترونية مقفلة. ابحثي عن كود فك التشفير المخبأ في سيرفر الديسكورد لفتح الصناديق المتزامنة:</p>
+          
+          <div class="boxes-grid" id="vaultGrid">
+            <div class="vault-box" onclick="clickBox(1)">صندوق 1</div>
+            <div class="vault-box" onclick="clickBox(2)">صندوق 2</div>
+            <div class="vault-box" onclick="clickBox(3)">صندوق 3</div>
+            <div class="vault-box" onclick="clickBox(4)">صندوق 4</div>
+            <div class="vault-box" onclick="clickBox(5)">صندوق 5</div>
+            <div class="vault-box" onclick="clickBox(6)">صندوق 6</div>
+            <div class="vault-box" onclick="clickBox(7)">صندوق 7</div>
+            <div class="vault-box" onclick="clickBox(8)">صندوق 8</div>
+            <div class="vault-box" onclick="clickBox(9)">صندوق 9</div>
+            <div class="vault-box" onclick="clickBox(10)">صندوق 10</div>
+          </div>
+
+          <div id="boxContentLog" style="color: #73ffaa; min-height: 24px; text-align: center; margin: 10px 0;"></div>
+        </div>
+      </div>
+      <div class="laptop-base"></div>
+      <div class="input-wrapper" id="discordCodeSection">
+        <input type="text" id="discordVaultInput" class="cyber-input" placeholder="كود روم الديسكورد" autocomplete="off" oninput="soundTyping()">
+        <button class="action-btn" onclick="unlockVaultBoxes()">فك قفل الصناديق</button>
+        <div id="stage5Err" class="error-msg"></div>
+      </div>
+
+      <div class="input-wrapper" id="vaultDoorSection" style="display: none; margin-top: 15px;">
+        <p style="text-align: center; color: #ffd700; font-size: 0.9rem;">أحد المفاتيح المستخرجة هو المفتاح الحقيقي لفتح هذا الباب:</p>
+        <input type="text" id="finalKeyInput" class="cyber-input" placeholder="المفتاح الحقيقي (مثال: KEY-XXXX)" autocomplete="off" oninput="soundTyping()">
+        <button class="action-btn" onclick="verifyFinalKey()">فتح الباب النهائي</button>
+        <div id="vaultDoorErr" class="error-msg"></div>
+      </div>
+    </div>
+
+    <!-- المرحلة 6: التيرمينال -->
+    <div class="stage" id="stage6">
       <div class="cli-box">
         <div class="cli-history" id="cliHistory">
           <div>POOKIE SECURITY CONSOLE v3.1. اكتبي <b>help</b> لعرض الأوامر.</div>
@@ -529,8 +604,8 @@
       </div>
     </div>
 
-    <!-- المرحلة 5: الروابط المموهة -->
-    <div class="stage" id="stage5">
+    <!-- المرحلة 7: الروابط المموهة بالمنفذ -->
+    <div class="stage" id="stage7">
       <div class="notepad">
         <p style="color: var(--term-dim); margin-bottom: 12px; text-align: right;">> SYSTEM_BACKUP_ACCESS.LOG</p>
         <span style="color: #006629;">// SYSTEM ADVISORY: TUNNEL CONNECTS TO SECURE PORT :1337 ONLY.</span><br><br>
@@ -538,14 +613,14 @@
         $$#% 99201 <span class="exact-link" onclick="triggerLockout()">https://pookie-auth.net:3000/token</span> 
         *&^%$#@@@ <span class="exact-link" onclick="triggerLockout()">https://pookie-gate.org:443/token</span> 
         ###### <span class="exact-link" onclick="triggerLockout()">https://pookie-relay.io:80/token</span> 
-        $$$ <span class="exact-link" onclick="goToStage6()">https://pookie-secure.matrix:1337/token</span> 
+        $$$ <span class="exact-link" onclick="goToStage8()">https://pookie-secure.matrix:1337/token</span> 
         @@@! 9901283 <span class="exact-link" onclick="triggerLockout()">https://pookie-vault.co:9000/token</span> 
         !@#*&^%%% <span class="exact-link" onclick="triggerLockout()">https://pookie-daemon.net:21/token</span> 
       </div>
     </div>
 
-    <!-- المرحلة 6: تسجيل الاسم والكلان -->
-    <div class="stage" id="stage6">
+    <!-- المرحلة 8: تسجيل الفوز والكلان -->
+    <div class="stage" id="stage8">
       <div class="victory-container">
         <svg class="svg-icon" style="width: 44px; height: 44px; margin-bottom: 10px;" viewBox="0 0 24 24">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -584,7 +659,7 @@
     const FIREBASE_DB_URL = "https://hack-d1f55-default-rtdb.firebaseio.com/winners.json";
     const ADMIN_PASSWORD = "admin123";
 
-    // ---- نظام الصوت ----
+    // نظام الصوت
     let audioCtx = null;
     let isAudioMuted = false;
 
@@ -592,9 +667,7 @@
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function toggleAudio() {
@@ -689,7 +762,7 @@
           await fetch(FIREBASE_DB_URL, { method: "DELETE" });
           alert("✅ تم مسح وحذف جميع بيانات الفائزين من Firebase بنجاح!");
         } catch(e) {
-          alert("❌ حدث خطأ أثناء تصفير السيرفر، تأكدي من إعدادات القواعد Rules في Firebase.");
+          alert("❌ حدث خطأ أثناء تصفير السيرفر.");
         }
       }
 
@@ -711,7 +784,6 @@
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
     const chars = "POOKIEHACK0123456789ABCDEF$#@%&*+-=";
     const fontSize = 14;
     const columns = Math.floor(canvas.width / fontSize);
@@ -726,9 +798,7 @@
       for (let i = 0; i < drops.length; i++) {
         const text = chars.charAt(Math.floor(Math.random() * chars.length));
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
         drops[i]++;
       }
     }
@@ -738,7 +808,7 @@
       canvas.height = window.innerHeight;
     });
 
-    // المراحل
+    // المرحلة 1
     function verifyStage1() {
       const val = document.getElementById('stage1Input').value.trim().toUpperCase();
       if (val === "BREACH") {
@@ -748,7 +818,7 @@
         initFlashlight();
       } else {
         soundError();
-        document.getElementById('stage1Err').textContent = "ركز بالكومبيوتر عدل: الكود لا يطابق المسار.";
+        document.getElementById('stage1Err').textContent = "الكود لا يطابق المسار الصحيح.";
       }
     }
 
@@ -764,6 +834,7 @@
       });
     }
 
+    // المرحلة 2
     function verifyStage2() {
       const val = document.getElementById('doorInput').value.trim().toUpperCase();
       if (val === "9340K8") {
@@ -776,6 +847,7 @@
       }
     }
 
+    // المرحلة 3
     function verifyStage3() {
       const val = document.getElementById('stage3Input').value.trim().toUpperCase();
       if (val === "ROOT") {
@@ -784,10 +856,96 @@
         document.getElementById('stage4').classList.add('active');
       } else {
         soundError();
-        document.getElementById('stage3Err').textContent = "خطأ في قراءة البايتات..";
+        document.getElementById('stage3Err').textContent = "خطأ في فك تشفير البايتات..";
       }
     }
 
+    // المرحلة 4: فحص الكود المصدري
+    function verifyStage4() {
+      const val = document.getElementById('stage4Input').value.trim();
+      if (val === "DOM_BYPASS_99") {
+        soundSuccess();
+        document.getElementById('stage4').classList.remove('active');
+        document.getElementById('stage5').classList.add('active');
+      } else {
+        soundError();
+        document.getElementById('stage4Err').textContent = "المفتاح غير مطابق للكود المصدري المخفي!";
+      }
+    }
+
+    // المرحلة 5: الصناديق العشرة
+    let boxesUnlocked = false;
+    function unlockVaultBoxes() {
+      const val = document.getElementById('discordVaultInput').value.trim();
+      const err = document.getElementById('stage5Err');
+      
+      // التحقق من كود الديسكورد الجديد
+      if (val.toLowerCase() === "p0okie16000") {
+        soundSuccess();
+        boxesUnlocked = true;
+        err.textContent = "";
+        document.getElementById('boxContentLog').textContent = "تم فك أقفال الحماية! تم تنشيط الصناديق: 3 و 7 و 9 للفتح.";
+        
+        [3, 7, 9].forEach(num => {
+          const el = document.querySelector(`.vault-box:nth-child(${num})`);
+          if (el) el.classList.add('unlocked');
+        });
+
+        document.getElementById('discordCodeSection').style.display = "none";
+        document.getElementById('vaultDoorSection').style.display = "flex";
+      } else {
+        soundError();
+        err.textContent = "كود الروم غير صحيح! ابحثي في سيرفر الديسكورد.";
+      }
+    }
+
+    function clickBox(boxNum) {
+      const log = document.getElementById('boxContentLog');
+      if (!boxesUnlocked) {
+        soundError();
+        log.textContent = "الصناديق مقفلة! ادخلي كود روم الديسكورد أولاً.";
+        return;
+      }
+
+      const boxEl = document.querySelector(`.vault-box:nth-child(${boxNum})`);
+      if (!boxEl.classList.contains('unlocked')) {
+        soundError();
+        log.textContent = `الصندوق [${boxNum}] غير متزامن مع كود الروم.`;
+        return;
+      }
+
+      boxEl.classList.add('opened');
+
+      if (boxNum === 3) {
+        soundSuccess();
+        log.innerHTML = "وجدتِ المفتاح الأول: <b style='color:#fff;'>KEY-ALPHA</b> (لكنه يبدو تالفاً جزئياً)";
+      } else if (boxNum === 7) {
+        soundSuccess();
+        log.innerHTML = "وجدتِ المفتاح الثاني: <b style='color:#ffd700;'>KEY-OMEGA</b> (المفتاح سليم ونشط)";
+      } else if (boxNum === 9) {
+        soundError();
+        log.innerHTML = "<b style='color:#ff2233;'>فخ أمني! تم تنشيط الحظر الأمني!</b>";
+        triggerLockout();
+      }
+    }
+
+    function verifyFinalKey() {
+      const val = document.getElementById('finalKeyInput').value.trim().toUpperCase();
+      const err = document.getElementById('vaultDoorErr');
+      if (val === "KEY-OMEGA") {
+        soundSuccess();
+        document.getElementById('stage5').classList.remove('active');
+        document.getElementById('stage6').classList.add('active');
+      } else if (val === "KEY-ALPHA") {
+        soundError();
+        err.textContent = "هذا المفتاح تالف! جربي المفتاح الآخر.";
+      } else {
+        soundError();
+        err.textContent = "مفتاح غير صحيح!";
+      }
+    }
+
+    // المرحلة 6: التيرمينال
     const cliInput = document.getElementById('cliCommand');
     const cliHistory = document.getElementById('cliHistory');
     cliInput.addEventListener('keydown', function(e) {
@@ -805,8 +963,8 @@
           soundSuccess();
           cliHistory.innerHTML += `<div style="color:#73ffaa;">تم الفتح! جاري تحويلك...</div>`;
           setTimeout(() => {
-            document.getElementById('stage4').classList.remove('active');
-            document.getElementById('stage5').classList.add('active');
+            document.getElementById('stage6').classList.remove('active');
+            document.getElementById('stage7').classList.add('active');
           }, 1000);
         } else {
           soundError();
@@ -816,6 +974,7 @@
       }
     });
 
+    // المرحلة 7: الروابط
     function triggerLockout() {
       soundError();
       const lockout = document.getElementById('lockoutScreen');
@@ -833,12 +992,13 @@
       }, 1000);
     }
 
-    function goToStage6() {
+    function goToStage8() {
       soundSuccess();
-      document.getElementById('stage5').classList.remove('active');
-      document.getElementById('stage6').classList.add('active');
+      document.getElementById('stage7').classList.remove('active');
+      document.getElementById('stage8').classList.add('active');
     }
 
+    // المرحلة 8: تسجيل الفوز
     async function submitWinner() {
       const name = document.getElementById('discordName').value.trim();
       const err = document.getElementById('submitErr');
