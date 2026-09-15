@@ -342,43 +342,37 @@
       width: 100%;
     }
 
-    /* المرحلة 5: الصناديق العشرة */
+    /* المرحلة 5: شبكة الصناديق المتطابقة بالشكل */
     .boxes-grid {
-      display: grid;
+      display: none;
       grid-template-columns: repeat(5, 1fr);
-      gap: 12px;
+      gap: 10px;
       margin: 18px 0;
       width: 100%;
     }
 
     .vault-box {
       background: rgba(0, 20, 10, 0.85);
-      border: 2px dashed var(--term-dim);
+      border: 1px solid var(--term-dim);
       border-radius: 6px;
-      padding: 15px 5px;
+      padding: 14px 4px;
       text-align: center;
-      cursor: not-allowed;
-      transition: 0.3s;
-      user-select: none;
-      opacity: 0.5;
-    }
-
-    .vault-box.unlocked {
       cursor: pointer;
-      opacity: 1;
-      border: 2px solid var(--term);
-      box-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+      transition: 0.2s;
+      user-select: none;
+      color: var(--term);
+      font-size: 0.9rem;
     }
 
-    .vault-box.unlocked:hover {
-      background: rgba(0, 255, 102, 0.15);
-      transform: translateY(-2px);
+    .vault-box:hover {
+      background: rgba(0, 255, 102, 0.1);
+      border-color: var(--term);
     }
 
     .vault-box.opened {
       border-color: #ffd700;
       color: #ffd700;
-      background: rgba(255, 215, 0, 0.1);
+      background: rgba(255, 215, 0, 0.08);
     }
 
     /* المرحلة 6: التيرمينال */
@@ -530,28 +524,39 @@
       </div>
     </div>
 
-    <!-- المرحلة 4: البحث في سجل الأكواد والنصوص (Log Dump) -->
+    <!-- المرحلة 4: سجل الأكواد والنصوص المموّهة -->
     <div class="stage" id="stage4">
       <div class="laptop-frame">
         <div class="laptop-screen">
-          <p>> BUFFER OVERFLOW DETECTED: MEMORY DUMP IN PROGRESS...</p>
-          <p>> تم حشر مفتاح التجاوز الأمني داخل مصفوفة البيانات أدناه. ابحثي عنه بين الأكواد:</p>
+          <p>> BUFFER OVERFLOW DETECTED: RAW SYSTEM LOG DUMP...</p>
+          <p>> تم حشر مفتاح التجاوز الأمني داخل مصفوفة بيانات الذاكرة التالية. ابحثي عنه بدقة:</p>
           
-          <div style="background: #010602; border: 1px solid var(--term-dim); padding: 14px; margin: 15px 0; max-height: 180px; overflow-y: auto; font-size: 0.8rem; line-height: 1.8; color: var(--term-dim); direction: ltr; text-align: left; user-select: text;">
-            0x7FFF01: 4F 50 45 4E _SYS_ERR_NULL<br>
-            0x7FFF08: [STACK_TRIP] 00 1F AA 44 BB 90<br>
-            0x7FFF12: DAEMON_PORT_LISTEN_INACTIVE<br>
-            0x7FFF20: TOKEN_STREAM: e89a-0012-ff81-cc20<br>
-            0x7FFF28: SEG_FAULT_RECOVERED_BYPASS<br>
-            0x7FFF34: >>> <span style="color: var(--term); font-weight: bold;">SECRET_KEY: [ DOM_BYPASS_99 ]</span> &lt;&lt;&lt;<br>
-            0x7FFF40: FLUSH_CACHE_BUFFER_READY<br>
-            0x7FFF48: 88 23 FF C0 11 90 EA 2B 44 91<br>
-            0x7FFF55: OVERFLOW_TRAP_DISARMED<br>
-            0x7FFF62: MEMORY_ALLOC: 0x8849204_SUCCESS<br>
-            0x7FFF70: END_OF_BLOCK_DUMP_NULL
+          <div style="background: #010602; border: 1px solid var(--term-dim); padding: 14px; margin: 15px 0; max-height: 200px; overflow-y: auto; font-size: 0.78rem; line-height: 1.85; color: var(--term-dim); direction: ltr; text-align: left; user-select: text;">
+            0x7FFF00: 4F 50 45 4E _SYS_ERR_NULL INIT_SEQUENCE<br>
+            0x7FFF04: [STACK_TRIP] 00 1F AA 44 BB 90 22 10<br>
+            0x7FFF09: DAEMON_PORT_LISTEN_INACTIVE_0x00<br>
+            0x7FFF0F: TOKEN_STREAM: e89a-0012-ff81-cc20-8801<br>
+            0x7FFF15: SEG_FAULT_RECOVERED_BYPASS_PTR<br>
+            0x7FFF1C: PACKET_BURST_CHECKSUM_OK [0x99201]<br>
+            0x7FFF22: INTRUSION_DETECTION_DISABLED_ROOT<br>
+            0x7FFF28: HEAP_BLOCK: 0x88914A 12 00 FF A3 EE 01<br>
+            0x7FFF2F: RAW_BYTE_STREAM: 43 4C 41 4E 5F 53 59 53<br>
+            0x7FFF35: REVERSE_PROXY_CHAIN_RESOLVED_GATEWAY<br>
+            0x7FFF3C: SYS_VAR_INJECT: DOM_BYPASS_99<br>
+            0x7FFF42: FLUSH_CACHE_BUFFER_READY_SIG_KILL<br>
+            0x7FFF48: 88 23 FF C0 11 90 EA 2B 44 91 CC 04<br>
+            0x7FFF50: OVERFLOW_TRAP_DISARMED_BY_THREAD_0<br>
+            0x7FFF58: ALLOC_MEM: 0x8849204_BLOCK_ALLOCATED<br>
+            0x7FFF60: REG_DX: 00000000_0000FFFF_SYSTEM_CORE<br>
+            0x7FFF67: SESSION_KEY_SALT: 9b882ac710ef39014a<br>
+            0x7FFF70: CIPHER_ROTATION_SYNC_STATE: STABLE<br>
+            0x7FFF78: NETWORK_SOCKET_KEEP_ALIVE: ACK_RECV<br>
+            0x7FFF80: KERNEL_PANIC_PREVENTED_HANDLER_EXEC<br>
+            0x7FFF87: THREAD_WATCHDOG_TIMER_RESET_SUCCESS<br>
+            0x7FFF90: END_OF_CORE_RAM_IMAGE_SEGMENT_NULL
           </div>
           
-          <p style="color: var(--term-dim); font-size: 0.85rem;">انسخي الكود المميز واكتبيه في خانة التخطي.</p>
+          <p style="color: var(--term-dim); font-size: 0.85rem;">المفتاح المطلوب: القيمة بعد رمز الحقن المتغير.</p>
         </div>
       </div>
       <div class="laptop-base"></div>
@@ -567,7 +572,7 @@
       <div class="laptop-frame">
         <div class="laptop-screen">
           <p>> DISCORD VAULT PROTOCOL DETECTED.</p>
-          <p>> يوجد 10 صناديق إلكترونية مقفلة. ابحثي عن كود فك التشفير المخبأ في سيرفر الديسكورد لفتح الصناديق المتزامنة:</p>
+          <p id="vaultStatusText">> الخزائن مشفرة ومخفية في النظام. ادخلي كود الروم من سيرفر الديسكورد لإظهارها:</p>
           
           <div class="boxes-grid" id="vaultGrid">
             <div class="vault-box" onclick="clickBox(1)">صندوق 1</div>
@@ -583,19 +588,23 @@
           </div>
 
           <div id="boxContentLog" style="color: #73ffaa; min-height: 24px; text-align: center; margin: 10px 0;"></div>
+          <div id="foundKeysDisplay" style="color: #ffd700; text-align: center; font-size: 0.85rem;"></div>
         </div>
       </div>
       <div class="laptop-base"></div>
+
+      <!-- خانة إدخال كود الديسكورد (تظهر أولاً وتختفي بعد الحل) -->
       <div class="input-wrapper" id="discordCodeSection">
         <input type="text" id="discordVaultInput" class="cyber-input" placeholder="كود روم الديسكورد" autocomplete="off" oninput="soundTyping()">
-        <button class="action-btn" onclick="unlockVaultBoxes()">فك قفل الصناديق</button>
+        <button class="action-btn" onclick="unlockVaultBoxes()">إظهار الصناديق</button>
         <div id="stage5Err" class="error-msg"></div>
       </div>
 
+      <!-- خانة الباب النهائي (مخفية وتظهر فقط بعد جمع الـ 3 مفاتيح) -->
       <div class="input-wrapper" id="vaultDoorSection" style="display: none; margin-top: 15px;">
-        <p style="text-align: center; color: #ffd700; font-size: 0.9rem;">أحد المفاتيح المستخرجة هو المفتاح الحقيقي لفتح هذا الباب:</p>
-        <input type="text" id="finalKeyInput" class="cyber-input" placeholder="المفتاح الحقيقي (مثال: KEY-XXXX)" autocomplete="off" oninput="soundTyping()">
-        <button class="action-btn" onclick="verifyFinalKey()">فتح الباب النهائي</button>
+        <p style="text-align: center; color: #ffd700; font-size: 0.9rem;">تم جمع المفاتيح الثلاثة! جربي إدخال المفتاح الذي يفتح الباب:</p>
+        <input type="text" id="finalKeyInput" class="cyber-input" placeholder="ادخلي أحد المفاتيح الثلاثة" autocomplete="off" oninput="soundTyping()">
+        <button class="action-btn" onclick="verifyFinalKey()">محاولة فتح الباب</button>
         <div id="vaultDoorErr" class="error-msg"></div>
       </div>
     </div>
@@ -882,25 +891,25 @@
       }
     }
 
-    // المرحلة 5
-    let boxesUnlocked = false;
+    // المرحلة 5: الصناديق والمفاتيح الثلاثة
+    let collectedKeys = [];
+    const keysMap = {
+      2: "KEY-VORTEX",
+      6: "KEY-NEXUS",
+      8: "KEY-CHRONO"
+    };
+
     function unlockVaultBoxes() {
       const val = document.getElementById('discordVaultInput').value.trim();
       const err = document.getElementById('stage5Err');
       
       if (val.toLowerCase() === "p0okie16000") {
         soundSuccess();
-        boxesUnlocked = true;
         err.textContent = "";
-        document.getElementById('boxContentLog').textContent = "تم فك أقفال الحماية! تم تنشيط الصناديق: 3 و 7 و 9 للفتح.";
-        
-        [3, 7, 9].forEach(num => {
-          const el = document.querySelector(`.vault-box:nth-child(${num})`);
-          if (el) el.classList.add('unlocked');
-        });
-
+        document.getElementById('vaultStatusText').textContent = "> تم فك التشفير الأولي! ابحثي في الصناديق لاكتشاف 3 مفاتيح مشفرة:";
+        document.getElementById('vaultGrid').style.display = "grid";
         document.getElementById('discordCodeSection').style.display = "none";
-        document.getElementById('vaultDoorSection').style.display = "flex";
+        document.getElementById('foundKeysDisplay').textContent = "المفاتيح المجمعة: 0 من 3";
       } else {
         soundError();
         err.textContent = "كود الروم غير صحيح! ابحثي في سيرفر الديسكورد.";
@@ -909,51 +918,50 @@
 
     function clickBox(boxNum) {
       const log = document.getElementById('boxContentLog');
-      if (!boxesUnlocked) {
-        soundError();
-        log.textContent = "الصناديق مقفلة! ادخلي كود روم الديسكورد أولاً.";
-        return;
-      }
-
       const boxEl = document.querySelector(`.vault-box:nth-child(${boxNum})`);
-      if (!boxEl.classList.contains('unlocked')) {
-        soundError();
-        log.textContent = `الصندوق [${boxNum}] غير متزامن مع كود الروم.`;
-        return;
-      }
-
       boxEl.classList.add('opened');
 
-      if (boxNum === 3) {
-        soundSuccess();
-        log.innerHTML = "وجدتِ المفتاح الأول: <b style='color:#fff;'>KEY-ALPHA</b> (لكنه يبدو تالفاً جزئياً)";
-      } else if (boxNum === 7) {
-        soundSuccess();
-        log.innerHTML = "وجدتِ المفتاح الثاني: <b style='color:#ffd700;'>KEY-OMEGA</b> (المفتاح سليم ونشط)";
-      } else if (boxNum === 9) {
+      if (keysMap[boxNum]) {
+        const foundKey = keysMap[boxNum];
+        if (!collectedKeys.includes(foundKey)) {
+          collectedKeys.push(foundKey);
+          soundSuccess();
+          log.innerHTML = `عثرتِ على مفتاح مشفر: <b style="color:#fff;">${foundKey}</b>`;
+        } else {
+          log.textContent = `هذا الصندوق يحتوي على المفتاح (${foundKey}) الذي قمتِ بجمعه مسبقاً.`;
+        }
+      } else {
         soundError();
-        log.innerHTML = "<b style='color:#ff2233;'>فخ أمني! تم تنشيط الحظر الأمني!</b>";
-        triggerLockout();
+        log.textContent = `الصندوق [${boxNum}] فارغ.. تابعي البحث.`;
+      }
+
+      document.getElementById('foundKeysDisplay').innerHTML = `المفاتيح المجمعة (${collectedKeys.length}/3): <b>${collectedKeys.join(' | ') || 'لا يوجد'}</b>`;
+
+      // عند إيجاد المفاتيح الثلاثة كلها يظهر الباب لتجربتها
+      if (collectedKeys.length === 3) {
+        document.getElementById('vaultDoorSection').style.display = "flex";
       }
     }
 
     function verifyFinalKey() {
       const val = document.getElementById('finalKeyInput').value.trim().toUpperCase();
       const err = document.getElementById('vaultDoorErr');
-      if (val === "KEY-OMEGA") {
+      
+      // المفتاح الصحيح فقط هو KEY-CHRONO
+      if (val === "KEY-CHRONO") {
         soundSuccess();
         document.getElementById('stage5').classList.remove('active');
         document.getElementById('stage6').classList.add('active');
-      } else if (val === "KEY-ALPHA") {
+      } else if (val === "KEY-VORTEX" || val === "KEY-NEXUS") {
         soundError();
-        err.textContent = "هذا المفتاح تالف! جربي المفتاح الآخر.";
+        err.textContent = "المفتاح غير صالح للقفل! جربي المفتاح الآخر.";
       } else {
         soundError();
-        err.textContent = "مفتاح غير صحيح!";
+        err.textContent = "كود غير مطابق لأي مفتاح قمتِ بجمعه!";
       }
     }
 
-    // المرحلة 6
+    // المرحلة 6: التيرمينال
     const cliInput = document.getElementById('cliCommand');
     const cliHistory = document.getElementById('cliHistory');
     cliInput.addEventListener('keydown', function(e) {
@@ -982,7 +990,7 @@
       }
     });
 
-    // المرحلة 7
+    // المرحلة 7: الروابط
     function triggerLockout() {
       soundError();
       const lockout = document.getElementById('lockoutScreen');
@@ -1006,7 +1014,7 @@
       document.getElementById('stage8').classList.add('active');
     }
 
-    // المرحلة 8
+    // المرحلة 8: تسجيل الفوز
     async function submitWinner() {
       const name = document.getElementById('discordName').value.trim();
       const err = document.getElementById('submitErr');
