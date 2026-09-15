@@ -1,1 +1,214 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POOKIE HACK // LIVE LEADERBOARD</title>
+  <style>
+    :root {
+      --bg: #020603;
+      --term: #00ff66;
+      --term-dim: #007a30;
+      --gold: #ffd700;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
+    }
 
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      background-color: var(--bg);
+      color: var(--term);
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      letter-spacing: 4px;
+      text-align: center;
+      text-shadow: 0 0 14px rgba(0, 255, 102, 0.6);
+      margin-bottom: 6px;
+    }
+
+    .sub {
+      color: var(--term-dim);
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .board-container {
+      width: 100%;
+      max-width: 720px;
+      background: rgba(3, 15, 6, 0.9);
+      border: 2px solid var(--term-dim);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 30px rgba(0, 255, 102, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: right;
+    }
+
+    th, td {
+      padding: 14px 10px;
+      border-bottom: 1px dashed rgba(0, 255, 102, 0.2);
+      font-size: 1rem;
+    }
+
+    th {
+      color: var(--term-dim);
+      font-size: 0.85rem;
+    }
+
+    .rank-1 { color: var(--gold); font-weight: bold; }
+    .rank-2 { color: var(--silver); font-weight: bold; }
+    .rank-3 { color: var(--bronze); font-weight: bold; }
+
+    .live-badge {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--term);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--term);
+      margin-left: 8px;
+    }
+
+    .return-btn {
+      margin-top: 25px;
+      background: transparent;
+      border: 1px solid var(--term-dim);
+      color: var(--term);
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .return-btn:hover {
+      background: rgba(0, 255, 102, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>POOKIE HACK RESULTS</h1>
+  <div class="sub"><span class="live-badge"></span> لوحة الصدارة المباشرة // الفائزون الأوائل</div>
+
+  <div class="board-container">
+    <table>
+      <thead>
+        <tr>
+          <th>المركز</th>
+          <th>المتسابقة والكلان</th>
+          <th>الوقت المستغرق</th>
+        </tr>
+      </thead>
+      <tbody id="winnersTable">
+        <tr>
+          <td colspan="3" style="text-align: center; color: var(--term-dim);">جاري تحميل النتائج الحية...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <a href="index.html" class="return-btn">العودة لشاشة التحدي</a>
+
+  <script>
+    const FIREBASE_DB_URL = "https://hack-d1f55-default-rtdb.firebaseio.com/winners.json";
+
+    async function loadLeaderboard() {
+      const tbody = document.getElementById('winnersTable');
+
+      try {
+        const res = await fetch(FIREBASE_DB_URL);
+        const data = await res.json();
+        const list = [];
+
+        if (data && typeof data === 'object') {
+          for (let k in data) {
+            if (data[k] && data[k].username) {
+              list.push(data[k]);
+            }
+          }
+        }
+
+        // إذا لم تكن هناك بيانات مسجلة في Firebase
+        if (list.length === 0) {
+          // فحص إذا كان هناك اسم قادم من الرابط للتجربة
+          const params = new URLSearchParams(window.location.search);
+          if (params.has('name')) {
+            tbody.innerHTML = `
+              <tr class="rank-1">
+                <td>المركز الأول 🥇</td>
+                <td>${escapeHtml(params.get('name'))}</td>
+                <td>${escapeHtml(params.get('time'))}</td>
+              </tr>
+            `;
+            return;
+          }
+
+          tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--term-dim);">لا توجد نتائج مسجلة حتى الآن.. كوني الأولى!</td></tr>`;
+          return;
+        }
+
+        // ترتيب حسب الأسرع (الأقل ثواني)
+        list.sort((a, b) => (Number(a.totalSeconds) || 0) - (Number(b.totalSeconds) || 0));
+
+        tbody.innerHTML = "";
+        list.forEach((item, index) => {
+          let rankClass = "";
+          let rankText = `#${index + 1}`;
+          if (index === 0) { rankClass = "rank-1"; rankText = "المركز الأول 🥇"; }
+          else if (index === 1) { rankClass = "rank-2"; rankText = "المركز الثاني 🥈"; }
+          else if (index === 2) { rankClass = "rank-3"; rankText = "المركز الثالث 🥉"; }
+
+          tbody.innerHTML += `
+            <tr class="${rankClass}">
+              <td>${rankText}</td>
+              <td>${escapeHtml(item.username)}</td>
+              <td>${escapeHtml(item.duration)}</td>
+            </tr>
+          `;
+        });
+
+      } catch (err) {
+        // حماية من الأخطاء: إظهار رسالة بدلاً من الشاشة البيضاء
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; color: var(--term-dim);">بانتظار وصول النتائج...</td></tr>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.replace(/[&<>'"]/g, tag => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        "'": '&#39;',
+        '"': '&quot;'
+      }[tag] || tag));
+    }
+
+    loadLeaderboard();
+    setInterval(loadLeaderboard, 4000);
+  </script>
+</body>
+</html>
