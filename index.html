@@ -19,21 +19,40 @@
       padding: 0;
     }
 
-    body {
+    html, body {
+      width: 100%;
+      min-height: 100vh;
       background-color: var(--bg);
       color: var(--term);
       font-family: 'Courier New', Courier, monospace;
-      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      overflow-x: hidden;
+      padding: 20px 15px;
       position: relative;
     }
 
-    /* خلفية الأكواد العشوائية المتحركة */
+    /* زر تشغيل/كتم الصوت في الزاوية */
+    .audio-toggle-btn {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 10000;
+      background: rgba(2, 10, 4, 0.85);
+      border: 1px solid var(--term-dim);
+      color: var(--term);
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
     #matrixCanvas {
       position: fixed;
       top: 0;
@@ -45,7 +64,6 @@
       pointer-events: none;
     }
 
-    /* خطوط الشاشة CRT */
     .scanlines {
       position: fixed;
       top: 0; left: 0;
@@ -61,13 +79,9 @@
       z-index: 9999;
     }
 
-    /* شاشة الحظر المؤقت - متمركزة بالكامل 100% */
     .lockout-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       width: 100vw;
       height: 100vh;
       background: rgba(15, 2, 4, 0.98);
@@ -79,32 +93,31 @@
       text-align: center;
       padding: 20px;
       z-index: 999999;
-      box-sizing: border-box;
     }
 
-    /* تأثير اللاق والتقطيع للشاشة */
     @keyframes systemLag {
       0% { transform: translate(0); }
       92% { transform: translate(0); }
-      93% { transform: translate(-4px, 2px) skewX(1deg); filter: hue-rotate(90deg); }
-      94% { transform: translate(4px, -2px) skewX(-2deg); }
+      93% { transform: translate(-3px, 1px) skewX(1deg); filter: hue-rotate(90deg); }
+      94% { transform: translate(3px, -1px) skewX(-1deg); }
       95% { transform: translate(0); filter: none; }
-      98% { transform: translate(2px, 1px); }
+      98% { transform: translate(1px, 1px); }
       100% { transform: translate(0); }
     }
 
     .lag-screen {
       animation: systemLag 4s infinite ease-in-out;
       width: 100%;
-      max-width: 840px;
+      max-width: 820px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       position: relative;
       z-index: 2;
+      margin: auto;
     }
 
-    /* تأثير النبض للعنوان والحقوق */
     @keyframes pulseGlow {
       0% { text-shadow: 0 0 5px rgba(0, 255, 102, 0.4); opacity: 0.85; }
       50% { text-shadow: 0 0 20px rgba(0, 255, 102, 1), 0 0 35px rgba(0, 255, 102, 0.8); opacity: 1; }
@@ -114,14 +127,19 @@
     .header-branding {
       text-align: center;
       margin-bottom: 22px;
-      user-select: none;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .main-title {
-      font-size: 2.4rem;
+      font-size: 2.3rem;
       letter-spacing: 6px;
       color: var(--term);
       animation: pulseGlow 2s infinite ease-in-out;
+      text-align: center;
     }
 
     .author-credit {
@@ -131,6 +149,21 @@
       margin-top: 6px;
       text-transform: lowercase;
       animation: pulseGlow 3s infinite ease-in-out;
+      text-align: center;
+    }
+
+    /* نجمة التحكم السرية */
+    .admin-star {
+      display: inline-block;
+      cursor: pointer;
+      color: var(--term);
+      margin-right: 5px;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .admin-star:hover {
+      transform: scale(1.4) rotate(15deg);
+      color: #fff;
     }
 
     .stage {
@@ -138,6 +171,8 @@
       width: 100%;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      margin: 0 auto;
     }
 
     .stage.active {
@@ -159,13 +194,14 @@
       border: 1px solid var(--term-dim);
       border-radius: 6px;
       padding: 20px;
-      min-height: 320px;
+      min-height: 300px;
       line-height: 1.7;
       font-size: 0.95rem;
+      text-align: right;
     }
 
     .laptop-base {
-      width: 104%;
+      width: 103%;
       height: 14px;
       background: #172018;
       border-radius: 0 0 16px 16px;
@@ -177,6 +213,7 @@
       flex-direction: column;
       gap: 10px;
       margin: 16px 0;
+      width: 100%;
     }
 
     .morse-block {
@@ -203,10 +240,13 @@
 
     .input-wrapper {
       width: 100%;
-      max-width: 460px;
+      max-width: 440px;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 10px;
+      margin: 0 auto;
     }
 
     .cyber-input {
@@ -223,6 +263,7 @@
     }
 
     .action-btn {
+      width: 100%;
       background: var(--term);
       color: #000;
       font-weight: bold;
@@ -233,6 +274,7 @@
       font-family: inherit;
       font-size: 0.95rem;
       transition: 0.2s;
+      text-align: center;
     }
 
     .action-btn:hover {
@@ -247,24 +289,34 @@
       min-height: 18px;
     }
 
-    /* المرحلة 2: الظلام الدامس الحقيقي */
+    /* المرحلة 2: الظلام الدامس */
     #stage2 {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
       background: #000;
       overflow: hidden;
       cursor: crosshair;
       z-index: 10;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #stage2.active {
+      display: flex;
     }
 
     .dark-room-content {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       background: #000;
-      -webkit-mask-image: radial-gradient(circle 80px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
-      mask-image: radial-gradient(circle 80px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
+      mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
     }
 
     .hidden-fragment {
@@ -275,20 +327,27 @@
       padding: 6px 12px;
       border: 1px dashed var(--term);
       border-radius: 4px;
+      user-select: all;
     }
 
     .dark-ui-fixed {
-      position: absolute;
-      bottom: 25px;
+      position: fixed;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 20;
       display: flex;
-      gap: 10px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       background: rgba(2, 8, 3, 0.92);
       border: 1px solid var(--term-dim);
-      padding: 12px 18px;
+      padding: 14px 20px;
       border-radius: 8px;
+      width: 90%;
+      max-width: 380px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.8);
     }
 
     /* المرحلة 3: الباينري */
@@ -296,13 +355,14 @@
       background: #010602;
       border: 1px solid var(--term-dim);
       padding: 16px;
-      margin: 15px 0;
+      margin: 15px auto;
       font-size: 0.95rem;
       letter-spacing: 2px;
       word-break: break-all;
       direction: ltr;
       text-align: center;
       user-select: all;
+      width: 100%;
     }
 
     /* المرحلة 4: التيرمينال */
@@ -320,10 +380,11 @@
 
     .cli-history {
       overflow-y: auto;
-      max-height: 220px;
+      max-height: 200px;
       font-size: 0.9rem;
       line-height: 1.6;
       margin-bottom: 12px;
+      text-align: right;
     }
 
     .cli-line {
@@ -343,7 +404,7 @@
       font-size: 0.95rem;
     }
 
-    /* المرحلة 5: الروابط المتطابقة */
+    /* المرحلة 5: الروابط */
     .notepad {
       background: rgba(2, 12, 5, 0.9);
       border: 2px solid var(--term-dim);
@@ -353,6 +414,7 @@
       line-height: 2.3;
       font-size: 0.95rem;
       word-break: break-all;
+      text-align: center;
     }
 
     .exact-link {
@@ -362,7 +424,7 @@
       margin: 0 4px;
     }
 
-    /* المرحلة 6: التوثيق والتسجيل */
+    /* المرحلة 6: لوحة التسجيل */
     .victory-container {
       background: rgba(0, 25, 10, 0.6);
       border: 2px solid var(--term);
@@ -370,6 +432,10 @@
       border-radius: 8px;
       text-align: center;
       width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .svg-icon {
@@ -384,10 +450,11 @@
 </head>
 <body>
 
+  <button class="audio-toggle-btn" id="audioToggle" onclick="toggleAudio()">🔊 الصوت: مفعّل</button>
   <canvas id="matrixCanvas"></canvas>
   <div class="scanlines"></div>
 
-  <!-- شاشة الحظر 20 ثانية (مستقلة ومتمركزة في المنتصف بالكامل) -->
+  <!-- شاشة الحظر 20 ثانية -->
   <div class="lockout-screen" id="lockoutScreen">
     <svg class="svg-icon" style="width: 52px; height: 52px; margin-bottom: 14px;" viewBox="0 0 24 24">
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
@@ -400,7 +467,11 @@
   <div class="lag-screen">
     <div class="header-branding">
       <h1 class="main-title">POOKIE HACK</h1>
-      <div class="author-credit">made by aseel</div>
+      <div class="author-credit">
+        made by aseel 
+        <!-- نجمة التحكم الخاصة بك لإعادة التصفير -->
+        <span class="admin-star" onclick="openAdminPanel()" title="Admin Reset">★</span>
+      </div>
     </div>
 
     <!-- المرحلة 1: شفرات المورس -->
@@ -421,7 +492,7 @@
       </div>
       <div class="laptop-base"></div>
       <div class="input-wrapper">
-        <input type="text" id="stage1Input" class="cyber-input" placeholder="ادخلي الكلمة الصحيحة" autocomplete="off">
+        <input type="text" id="stage1Input" class="cyber-input" placeholder="ادخلي الكلمة الصحيحة" autocomplete="off" oninput="soundTyping()">
         <button class="action-btn" onclick="verifyStage1()">تأكيد الكود</button>
         <div id="stage1Err" class="error-msg"></div>
       </div>
@@ -430,30 +501,30 @@
     <!-- المرحلة 2: الظلام الدامس -->
     <div class="stage" id="stage2">
       <div class="dark-room-content" id="darkRoom">
-        <div class="hidden-fragment" style="top: 9%; left: 8%;">NODE_A: [93]</div>
-        <div class="hidden-fragment" style="bottom: 18%; right: 9%;">NODE_B: [40]</div>
-        <div class="hidden-fragment" style="top: 14%; right: 14%;">NODE_C: [K8]</div>
+        <div class="hidden-fragment" style="top: 10%; left: 8%;">NODE_A: [93]</div>
+        <div class="hidden-fragment" style="bottom: 25%; right: 9%;">NODE_B: [40]</div>
+        <div class="hidden-fragment" style="top: 18%; right: 12%;">NODE_C: [K8]</div>
       </div>
       <div class="dark-ui-fixed">
-        <input type="text" id="doorInput" class="cyber-input" placeholder="المفتاح (A+B+C)" style="width: 220px;" autocomplete="off">
-        <button class="action-btn" onclick="verifyStage2()" style="padding: 10px 16px;">فتح</button>
+        <input type="text" id="doorInput" class="cyber-input" placeholder="المفتاح (A+B+C)" autocomplete="off" oninput="soundTyping()">
+        <button class="action-btn" onclick="verifyStage2()" style="padding: 10px 16px;">تحرير القفل</button>
+        <div id="stage2Err" class="error-msg"></div>
       </div>
-      <div id="stage2Err" class="error-msg" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);"></div>
     </div>
 
     <!-- المرحلة 3: الباينري -->
     <div class="stage" id="stage3">
       <div class="laptop-frame">
-        <div class="laptop-screen">
-          <p>> NETWORK BYTE DUMP: ASCII SEQUENCE</p>
-          <p>> حوّلي بايتات الـ ASCII إلى كلمة مرور حقيقية:</p>
+        <div class="laptop-screen" style="text-align: center;">
+          <p style="text-align: right;">> NETWORK BYTE DUMP: ASCII SEQUENCE</p>
+          <p style="text-align: right;">> حوّلي بايتات الـ ASCII إلى كلمة مرور حقيقية:</p>
           <div class="binary-stream">01010010 01001111 01001111 01010100</div>
           <p style="color: var(--term-dim); font-size: 0.85rem;">8-bit ASCII Decryption Required.</p>
         </div>
       </div>
       <div class="laptop-base"></div>
       <div class="input-wrapper">
-        <input type="text" id="stage3Input" class="cyber-input" placeholder="الكلمة المفكوكة" autocomplete="off">
+        <input type="text" id="stage3Input" class="cyber-input" placeholder="الكلمة المفكوكة" autocomplete="off" oninput="soundTyping()">
         <button class="action-btn" onclick="verifyStage3()">تجاوز البايتات</button>
         <div id="stage3Err" class="error-msg"></div>
       </div>
@@ -467,16 +538,16 @@
         </div>
         <div class="cli-line">
           <span>root@pookie:~#</span>
-          <input type="text" id="cliCommand" class="cli-input" autofocus autocomplete="off">
+          <input type="text" id="cliCommand" class="cli-input" autofocus autocomplete="off" oninput="soundTyping()">
         </div>
       </div>
     </div>
 
-    <!-- المرحلة 5: الروابط المموهة بالمنفذ -->
+    <!-- المرحلة 5: الروابط المموهة -->
     <div class="stage" id="stage5">
       <div class="notepad">
-        <p style="color: var(--term-dim); margin-bottom: 12px;">> SYSTEM_BACKUP_ACCESS.LOG</p>
-        <span style="color: #006629;">// SYSTEM ADVISORY: TUNNEL CONNECTS TO SECURE PORT :1337 ONLY.</span><br>
+        <p style="color: var(--term-dim); margin-bottom: 12px; text-align: right;">> SYSTEM_BACKUP_ACCESS.LOG</p>
+        <span style="color: #006629;">// SYSTEM ADVISORY: TUNNEL CONNECTS TO SECURE PORT :1337 ONLY.</span><br><br>
         0x9A44 <span class="exact-link" onclick="triggerLockout()">https://pookie-core.sys:8080/token</span> 
         $$#% 99201 <span class="exact-link" onclick="triggerLockout()">https://pookie-auth.net:3000/token</span> 
         *&^%$#@@@ <span class="exact-link" onclick="triggerLockout()">https://pookie-gate.org:443/token</span> 
@@ -498,19 +569,155 @@
         <p>تم اجتياز جميع العقبات بنجاح!</p>
         <p>ادخلي اسمك واسم كلانك ليتم رفع نتيجتك وحساب وقتك بالثانية على لوحة الصدارة العامة:</p>
         <br>
-        <input type="text" id="discordName" class="cyber-input" placeholder="اسمك واسم كلانك (مثال: اسيل [POOKIE])" style="max-width: 360px;" autocomplete="off">
-        <br><br>
-        <button class="action-btn" onclick="submitWinner()">تسجيل وتأكيد الفوز</button>
-        <div id="submitErr" class="error-msg"></div>
+        <div class="input-wrapper">
+          <input type="text" id="discordName" class="cyber-input" placeholder="اسمك واسم كلانك (مثال: اسيل [POOKIE])" autocomplete="off" oninput="soundTyping()">
+          <button class="action-btn" onclick="submitWinner()">تسجيل وتأكيد الفوز</button>
+          <div id="submitErr" class="error-msg"></div>
+        </div>
       </div>
     </div>
 
   </div>
 
   <script>
-    const START_TIME = Date.now();
+    let START_TIME = Date.now();
+    const FIREBASE_DB_URL = "https://hack-d1f55-default-rtdb.firebaseio.com/winners.json";
+    const ADMIN_PASSWORD = "admin123"; // يمكنك تغيير باسورد الإدارة من هنا
 
-    // تشغيل مصفوفة الماتريكس في الخلفية
+    // ---- نظام الصوت البرمجي الاحترافي (Web Audio API) ----
+    let audioCtx = null;
+    let isAudioMuted = false;
+    let ambientOsc = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        startAmbientDrone();
+      }
+    }
+
+    function toggleAudio() {
+      isAudioMuted = !isAudioMuted;
+      const btn = document.getElementById('audioToggle');
+      if (isAudioMuted) {
+        btn.textContent = "🔇 الصوت: مكتوم";
+        if (ambientOsc) ambientOsc.stop();
+      } else {
+        btn.textContent = "🔊 الصوت: مفعّل";
+        initAudio();
+        startAmbientDrone();
+      }
+    }
+
+    // صوت خلفية سيبراني خافت
+    function startAmbientDrone() {
+      if (isAudioMuted || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(55, audioCtx.currentTime); // تردد هكر عميق
+        gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        ambientOsc = osc;
+      } catch(e){}
+    }
+
+    // صوت تكتكة البرمجة عند الكتابة
+    function soundTyping() {
+      if (isAudioMuted) return;
+      initAudio();
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(1200 + Math.random() * 400, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch(e){}
+    }
+
+    // نغمة النجاح وفتح الأبواب
+    function soundSuccess() {
+      if (isAudioMuted) return;
+      initAudio();
+      try {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(now + 0.3);
+      } catch(e){}
+    }
+
+    // نغمة الخطأ والإنذار
+    function soundError() {
+      if (isAudioMuted) return;
+      initAudio();
+      try {
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.linearRampToValueAtTime(90, now + 0.2);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0, now + 0.25);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(now + 0.25);
+      } catch(e){}
+    }
+
+    window.addEventListener('click', () => initAudio(), { once: true });
+
+    // ---- لوحة الإدارة لإعادة التصفير عبر النجمة ★ ----
+    async function openAdminPanel() {
+      const pass = prompt("🔐 لوحة تحكم الإدارة (Aseel):\nادخلي كلمة المرور للوصول إلى أدوات التصفير:");
+      if (pass !== ADMIN_PASSWORD) {
+        alert("❌ كلمة المرور غير صحيحة!");
+        return;
+      }
+
+      const choice = prompt(
+        "اختاري الإجراء المطلوب:\n" +
+        "1: تصفير وحذف قائمة الفائزين بالكامل من السيرفر (Firebase)\n" +
+        "2: إعادة تصفير اللعبة وإرجاع الشاشة إلى البداية\n" +
+        "3: تصفير السيرفر واللعبة معاً"
+      );
+
+      if (choice === "1" || choice === "3") {
+        try {
+          await fetch(FIREBASE_DB_URL, { method: "DELETE" });
+          alert("✅ تم مسح وحذف جميع بيانات الفائزين من Firebase بنجاح!");
+        } catch(e) {
+          alert("❌ حدث خطأ أثناء تصفير السيرفر، تأكدي من إعدادات القواعد Rules في Firebase.");
+        }
+      }
+
+      if (choice === "2" || choice === "3") {
+        document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+        document.getElementById('stage1').classList.add('active');
+        START_TIME = Date.now();
+        alert("✅ تم تصفير اللعبة وإرجاع المؤقت والمراحل من الصفر!");
+      }
+    }
+
+    // ---- مصفوفة الماتريكس والخلفية ----
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -542,14 +749,16 @@
       canvas.height = window.innerHeight;
     });
 
-    // حلول المراحل والتحقق
+    // ---- المراحل والتحقق ----
     function verifyStage1() {
       const val = document.getElementById('stage1Input').value.trim().toUpperCase();
       if (val === "BREACH") {
+        soundSuccess();
         document.getElementById('stage1').classList.remove('active');
         document.getElementById('stage2').classList.add('active');
         initFlashlight();
       } else {
+        soundError();
         document.getElementById('stage1Err').textContent = "ركز بالكومبيوتر عدل: الكود لا يطابق المسار.";
       }
     }
@@ -569,9 +778,11 @@
     function verifyStage2() {
       const val = document.getElementById('doorInput').value.trim().toUpperCase();
       if (val === "9340K8") {
+        soundSuccess();
         document.getElementById('stage2').classList.remove('active');
         document.getElementById('stage3').classList.add('active');
       } else {
+        soundError();
         document.getElementById('stage2Err').textContent = "المفتاح المجمع غير صحيح!";
       }
     }
@@ -579,9 +790,11 @@
     function verifyStage3() {
       const val = document.getElementById('stage3Input').value.trim().toUpperCase();
       if (val === "ROOT") {
+        soundSuccess();
         document.getElementById('stage3').classList.remove('active');
         document.getElementById('stage4').classList.add('active');
       } else {
+        soundError();
         document.getElementById('stage3Err').textContent = "خطأ في قراءة البايتات..";
       }
     }
@@ -594,21 +807,28 @@
         this.value = '';
         cliHistory.innerHTML += `<div><span style="color:#00ff66;">root@pookie:~#</span> ${cmd}</div>`;
         if (cmd === 'help') {
+          soundSuccess();
           cliHistory.innerHTML += `<div>الأوامر: <b>scan</b> (فحص المسارات), <b>decrypt</b> (فك القفل)</div>`;
         } else if (cmd === 'scan') {
+          soundSuccess();
           cliHistory.innerHTML += `<div>تم التقاط المنفذ الآمن [PORT: 1337]. اكتبي <b>decrypt</b> للفتح.</div>`;
         } else if (cmd === 'decrypt') {
+          soundSuccess();
           cliHistory.innerHTML += `<div style="color:#73ffaa;">تم الفتح! جاري تحويلك...</div>`;
           setTimeout(() => {
             document.getElementById('stage4').classList.remove('active');
             document.getElementById('stage5').classList.add('active');
           }, 1000);
+        } else {
+          soundError();
+          cliHistory.innerHTML += `<div style="color:#ff2233;">أمر غير معروف. اكتبي help</div>`;
         }
         cliHistory.scrollTop = cliHistory.scrollHeight;
       }
     });
 
     function triggerLockout() {
+      soundError();
       const lockout = document.getElementById('lockoutScreen');
       const timer = document.getElementById('lockoutTimer');
       lockout.style.display = 'flex';
@@ -625,22 +845,22 @@
     }
 
     function goToStage6() {
+      soundSuccess();
       document.getElementById('stage5').classList.remove('active');
       document.getElementById('stage6').classList.add('active');
     }
-
-    // رابط الـ Firebase الفعلي الخاص بكِ
-    const FIREBASE_DB_URL = "https://hack-d1f55-default-rtdb.firebaseio.com/winners.json";
 
     async function submitWinner() {
       const name = document.getElementById('discordName').value.trim();
       const err = document.getElementById('submitErr');
 
       if (!name) {
+        soundError();
         err.textContent = "ادخلي اسمك واسم كلانك أولاً!";
         return;
       }
 
+      soundSuccess();
       const totalSeconds = Math.floor((Date.now() - START_TIME) / 1000);
       const minutes = Math.floor(totalSeconds / 60);
       const seconds = totalSeconds % 60;
