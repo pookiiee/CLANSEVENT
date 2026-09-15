@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>POOKIE HACK // OVERRIDE</title>
+  <title>POOKIE HACK // BREACH TERMINAL</title>
   <style>
     :root {
-      --bg: #030704;
+      --bg: #020502;
       --term: #00ff66;
-      --term-dim: #008f39;
-      --term-dark: #00260e;
-      --alert: #ff2a3b;
-      --link-fake: #00ff66;
-      --link-real: #7affb2;
+      --term-dim: #007a30;
+      --term-dark: #001f0b;
+      --alert: #ff2233;
     }
 
     * {
@@ -32,17 +30,51 @@
       justify-content: center;
       padding: 20px;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* خطوط الشاشة CRT */
+    /* خلفية الكودات العشوائية المتحركة */
+    #matrixCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      opacity: 0.28;
+      pointer-events: none;
+    }
+
+    /* تأثير اللاغ وتقطيع الشاشة (Lag Glitch) */
+    @keyframes systemLag {
+      0% { transform: translate(0); }
+      92% { transform: translate(0); }
+      93% { transform: translate(-4px, 2px) skewX(1deg); filter: hue-rotate(90deg); }
+      94% { transform: translate(4px, -2px) skewX(-2deg); }
+      95% { transform: translate(0); filter: none; }
+      98% { transform: translate(2px, 1px); }
+      100% { transform: translate(0); }
+    }
+
+    .lag-screen {
+      animation: systemLag 4s infinite ease-in-out;
+      width: 100%;
+      max-width: 840px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
     .scanlines {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background: repeating-linear-gradient(
         0deg,
-        rgba(0, 0, 0, 0.45),
-        rgba(0, 0, 0, 0.45) 1px,
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5) 1px,
         transparent 1px,
         transparent 2px
       );
@@ -50,31 +82,37 @@
       z-index: 999;
     }
 
-    /* الهيدر الرئيسي */
+    @keyframes pulseGlow {
+      0% { text-shadow: 0 0 5px rgba(0, 255, 102, 0.4); opacity: 0.85; }
+      50% { text-shadow: 0 0 20px rgba(0, 255, 102, 1), 0 0 35px rgba(0, 255, 102, 0.8); opacity: 1; }
+      100% { text-shadow: 0 0 5px rgba(0, 255, 102, 0.4); opacity: 0.85; }
+    }
+
     .header-branding {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 22px;
+      user-select: none;
     }
 
     .main-title {
-      font-size: 2.2rem;
-      letter-spacing: 5px;
+      font-size: 2.4rem;
+      letter-spacing: 6px;
       color: var(--term);
-      text-shadow: 0 0 12px rgba(0, 255, 102, 0.5);
+      animation: pulseGlow 2s infinite ease-in-out;
     }
 
     .author-credit {
       font-size: 0.85rem;
       color: var(--term-dim);
       letter-spacing: 3px;
-      margin-top: 5px;
+      margin-top: 6px;
       text-transform: lowercase;
+      animation: pulseGlow 3s infinite ease-in-out;
     }
 
     .stage {
       display: none;
       width: 100%;
-      max-width: 820px;
       flex-direction: column;
       align-items: center;
     }
@@ -83,18 +121,18 @@
       display: flex;
     }
 
-    /* تصميم شاشة اللابتوب للمرحلة 1 */
     .laptop-frame {
       width: 100%;
-      background: #111;
-      border: 3px solid #222;
+      background: rgba(15, 20, 15, 0.85);
+      backdrop-filter: blur(4px);
+      border: 2px solid #203022;
       border-radius: 12px 12px 2px 2px;
       padding: 14px;
       box-shadow: 0 0 35px rgba(0, 255, 102, 0.1);
     }
 
     .laptop-screen {
-      background: #020b04;
+      background: rgba(2, 12, 5, 0.95);
       border: 1px solid var(--term-dim);
       border-radius: 6px;
       padding: 20px;
@@ -104,25 +142,25 @@
     }
 
     .laptop-base {
-      width: 105%;
+      width: 104%;
       height: 14px;
-      background: #1a1a1a;
+      background: #172018;
       border-radius: 0 0 16px 16px;
-      margin-bottom: 25px;
+      margin-bottom: 22px;
     }
 
     .morse-grid {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin: 18px 0;
+      gap: 10px;
+      margin: 16px 0;
     }
 
     .morse-block {
-      background: rgba(0, 255, 102, 0.04);
-      border: 1px solid var(--term-dim);
+      background: rgba(0, 255, 102, 0.03);
+      border: 1px solid var(--term-dark);
       border-radius: 4px;
-      padding: 10px 14px;
+      padding: 9px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -130,10 +168,9 @@
     }
 
     .morse-code {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       letter-spacing: 3px;
       user-select: all;
-      color: #9dffc8;
     }
 
     .morse-tag {
@@ -143,7 +180,7 @@
 
     .input-wrapper {
       width: 100%;
-      max-width: 440px;
+      max-width: 460px;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -151,7 +188,7 @@
 
     .cyber-input {
       width: 100%;
-      background: #020b04;
+      background: #020904;
       border: 2px solid var(--term);
       color: var(--term);
       padding: 12px;
@@ -176,7 +213,8 @@
     }
 
     .action-btn:hover {
-      background: #5cff9d;
+      background: #73ffaa;
+      box-shadow: 0 0 14px rgba(0, 255, 102, 0.5);
     }
 
     .error-msg {
@@ -186,26 +224,24 @@
       min-height: 18px;
     }
 
-    /* ---- المرحلة 2: الغرفة المظلمة والكشاف الحقيقي ---- */
+    /* المرحلة 2: الظلام الدامس */
     #stage2 {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      max-width: 100vw;
       background: #000;
       overflow: hidden;
       cursor: crosshair;
+      z-index: 10;
     }
 
-    /* طبقة المحتوى المظلم التي لا ترى إلا بقناع الضوء */
     .dark-room-content {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       background: #000;
-      /* القناع المظلم الحقيقي */
-      -webkit-mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
-      mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle 80px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
+      mask-image: radial-gradient(circle 80px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
     }
 
     .hidden-fragment {
@@ -218,58 +254,89 @@
       border-radius: 4px;
     }
 
-    .door-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border: 1px solid var(--term);
-      background: #030c05;
-      padding: 20px;
-      text-align: center;
-      border-radius: 6px;
-    }
-
-    /* لوحة التحكم الثابتة فوق الظلام للإدخال */
     .dark-ui-fixed {
       position: absolute;
       bottom: 25px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 10;
+      z-index: 20;
       display: flex;
       gap: 10px;
-      background: rgba(3, 10, 5, 0.9);
+      background: rgba(2, 8, 3, 0.92);
       border: 1px solid var(--term-dim);
       padding: 12px 18px;
       border-radius: 8px;
     }
 
-    /* ---- المرحلة 3: تدرج الألوان الدقيق والحظر ---- */
+    /* المرحلة 3: الباينري */
+    .binary-stream {
+      background: #010602;
+      border: 1px solid var(--term-dim);
+      padding: 16px;
+      margin: 15px 0;
+      font-size: 0.95rem;
+      letter-spacing: 2px;
+      word-break: break-all;
+      direction: ltr;
+      text-align: center;
+      user-select: all;
+    }
+
+    /* المرحلة 4: التيرمينال */
+    .cli-box {
+      width: 100%;
+      background: #010803;
+      border: 2px solid var(--term-dim);
+      border-radius: 6px;
+      padding: 16px;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cli-history {
+      overflow-y: auto;
+      max-height: 220px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .cli-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      direction: ltr;
+    }
+
+    .cli-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--term);
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    /* المرحلة 5: الروابط المتطابقة */
     .notepad {
-      background: #020c05;
+      background: rgba(2, 12, 5, 0.9);
       border: 2px solid var(--term-dim);
       border-radius: 6px;
       padding: 24px;
       width: 100%;
-      line-height: 2.1;
+      line-height: 2.3;
       font-size: 0.95rem;
       word-break: break-all;
     }
 
-    .fake-target {
-      color: var(--link-fake);
+    .exact-link {
+      color: var(--term);
       text-decoration: underline;
       cursor: pointer;
       margin: 0 4px;
-    }
-
-    .real-target {
-      color: var(--link-real);
-      text-decoration: underline;
-      cursor: pointer;
-      margin: 0 4px;
-      font-weight: bold;
     }
 
     .lockout-screen {
@@ -287,25 +354,13 @@
       padding: 20px;
     }
 
-    /* المرحلة 4: التحقق وتوثيق الفوز */
     .victory-container {
-      background: rgba(0, 30, 12, 0.45);
+      background: rgba(0, 25, 10, 0.6);
       border: 2px solid var(--term);
       padding: 35px 25px;
       border-radius: 8px;
       text-align: center;
       width: 100%;
-    }
-
-    .token-box {
-      background: #000;
-      border: 2px dashed var(--term);
-      padding: 16px;
-      margin: 20px 0;
-      font-size: 1.25rem;
-      letter-spacing: 2px;
-      word-break: break-all;
-      user-select: all;
     }
 
     .svg-icon {
@@ -320,230 +375,291 @@
 </head>
 <body>
 
+  <canvas id="matrixCanvas"></canvas>
   <div class="scanlines"></div>
 
-  <!-- الهيدر الموحد -->
-  <div class="header-branding">
-    <h1 class="main-title">POOKIE HACK</h1>
-    <div class="author-credit">made by aseel</div>
-  </div>
+  <div class="lag-screen">
+    <div class="header-branding">
+      <h1 class="main-title">POOKIE HACK</h1>
+      <div class="author-credit">made by aseel</div>
+    </div>
 
-  <!-- قفل الحظر عند النقر الخاطئ على الروابط -->
-  <div class="lockout-screen" id="lockoutScreen">
-    <svg class="svg-icon" style="width: 48px; height: 48px; margin-bottom: 12px;" viewBox="0 0 24 24">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-    </svg>
-    <h2 style="font-size: 1.8rem; margin-bottom: 8px;">SECURITY LOCKOUT</h2>
-    <p>تم التقاط مسار وهمي وتنشيط جدار الحظر الأمني المؤقت.</p>
-    <br>
-    <div id="lockoutTimer" style="font-size: 2.4rem; font-weight: bold;">20s</div>
-  </div>
+    <!-- شاشة الحظر المؤقت -->
+    <div class="lockout-screen" id="lockoutScreen">
+      <svg class="svg-icon" style="width: 48px; height: 48px; margin-bottom: 12px;" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+      <h2 style="font-size: 1.8rem; margin-bottom: 8px;">SECURITY LOCKOUT</h2>
+      <p>تم التقاط مسار خاطئ وتنشيط جدار الحظر المؤقت.</p>
+      <div id="lockoutTimer" style="font-size: 2.4rem; font-weight: bold; margin-top: 10px;">20s</div>
+    </div>
 
-  <!-- المرحلة 1: شاشة اللابتوب و5 شفرات مورس -->
-  <div class="stage active" id="stage1">
-    <div class="laptop-frame">
-      <div class="laptop-screen">
-        <p>> PROTOCOL INTERCEPTED: 5 RECON BEACONS FOUND.</p>
-        <p>> تم رصد 5 مصفوفات تشفير، شفرة واحدة فقط تحمل الكلمة الحقيقية لتجاوز الجدار:</p>
-        
-        <div class="morse-grid">
-          <!-- 1: CIPHER_DUMMY_1 (DECAY) -->
-          <div class="morse-block">
-            <span class="morse-tag">[FEED_01]</span>
-            <span class="morse-code">-.. . -.-. .- -.--</span>
+    <!-- المرحلة 1 -->
+    <div class="stage active" id="stage1">
+      <div class="laptop-frame">
+        <div class="laptop-screen">
+          <p>> PROTOCOL INTERCEPTED: 5 BEACONS DETECTED.</p>
+          <p>> تم رصد 5 شفرات مورس، شفرة واحدة فقط تمنح صلاحية الاختراق:</p>
+          <div class="morse-grid">
+            <div class="morse-block"><span class="morse-tag">[FEED_01]</span><span class="morse-code">-.. . -.-. .- -.--</span></div>
+            <div class="morse-block"><span class="morse-tag">[FEED_02]</span><span class="morse-code">- --- -..- .. -.-.</span></div>
+            <div class="morse-block"><span class="morse-tag">[FEED_03]</span><span class="morse-code">-... .-. . .- -.-. ....</span></div>
+            <div class="morse-block"><span class="morse-tag">[FEED_04]</span><span class="morse-code">--. .... --- ... -</span></div>
+            <div class="morse-block"><span class="morse-tag">[FEED_05]</span><span class="morse-code">.-. . ... . -</span></div>
           </div>
-          <!-- 2: CIPHER_DUMMY_2 (TOXIC) -->
-          <div class="morse-block">
-            <span class="morse-tag">[FEED_02]</span>
-            <span class="morse-code">- --- -..- .. -.-.</span>
-          </div>
-          <!-- 3: CIPHER_REAL (BREACH) الشفرة الصحيحة -->
-          <div class="morse-block">
-            <span class="morse-tag">[FEED_03]</span>
-            <span class="morse-code">-... .-. . .- -.-. ....</span>
-          </div>
-          <!-- 4: CIPHER_DUMMY_3 (GHOST) -->
-          <div class="morse-block">
-            <span class="morse-tag">[FEED_04]</span>
-            <span class="morse-code">--. .... --- ... -</span>
-          </div>
-          <!-- 5: CIPHER_DUMMY_4 (RESET) -->
-          <div class="morse-block">
-            <span class="morse-tag">[FEED_05]</span>
-            <span class="morse-code">.-. . ... . -</span>
-          </div>
+          <p style="color: var(--term-dim); font-size: 0.85rem;">استخرجي مفتاح العبور من الشفرة المعتمدة.</p>
         </div>
-
-        <p style="color: var(--term-dim); font-size: 0.85rem;">
-          فككي الشفرات لاكتشاف الكلمة التي تطابق مفتاح الاختراق الرئيسي.
-        </p>
       </div>
-    </div>
-    <div class="laptop-base"></div>
-
-    <div class="input-wrapper">
-      <input type="text" id="stage1Input" class="cyber-input" placeholder="ادخل الكلمة المترجمة الصحيحة" autocomplete="off">
-      <button class="action-btn" onclick="verifyStage1()">
-        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
-        تأكيد المفتاح
-      </button>
-      <div id="stage1Err" class="error-msg"></div>
-    </div>
-  </div>
-
-  <!-- المرحلة 2: الغرفة المظلمة كلياً والكشاف الحقيقي -->
-  <div class="stage" id="stage2">
-    <div class="dark-room-content" id="darkRoom">
-      <!-- قطع الرموز الثلاث مخفية في زوايا متباعدة -->
-      <div class="hidden-fragment" style="top: 8%; left: 10%;">NODE_A: [93]</div>
-      <div class="hidden-fragment" style="bottom: 18%; right: 8%;">NODE_B: [40]</div>
-      <div class="hidden-fragment" style="top: 14%; right: 12%;">NODE_C: [K8]</div>
-
-      <div class="door-center">
-        <svg class="svg-icon" style="width: 28px; height: 28px;" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
-        <p style="margin-top: 6px;">بوابة العبور مشفرة</p>
+      <div class="laptop-base"></div>
+      <div class="input-wrapper">
+        <input type="text" id="stage1Input" class="cyber-input" placeholder="ادخلي الكلمة الصحيحة" autocomplete="off">
+        <button class="action-btn" onclick="verifyStage1()">تأكيد الكود</button>
+        <div id="stage1Err" class="error-msg"></div>
       </div>
     </div>
 
-    <!-- لوحة كتابة الكود الثابتة بالأسفل -->
-    <div class="dark-ui-fixed">
-      <input type="text" id="doorInput" class="cyber-input" placeholder="اجمعي القطع (A + B + C)" style="width: 210px;" autocomplete="off">
-      <button class="action-btn" onclick="verifyStage2()" style="padding: 10px 16px;">فتح</button>
+    <!-- المرحلة 2: الظلام -->
+    <div class="stage" id="stage2">
+      <div class="dark-room-content" id="darkRoom">
+        <div class="hidden-fragment" style="top: 9%; left: 8%;">NODE_A: [93]</div>
+        <div class="hidden-fragment" style="bottom: 18%; right: 9%;">NODE_B: [40]</div>
+        <div class="hidden-fragment" style="top: 14%; right: 14%;">NODE_C: [K8]</div>
+      </div>
+      <div class="dark-ui-fixed">
+        <input type="text" id="doorInput" class="cyber-input" placeholder="المفتاح (A+B+C)" style="width: 220px;" autocomplete="off">
+        <button class="action-btn" onclick="verifyStage2()" style="padding: 10px 16px;">فتح</button>
+      </div>
+      <div id="stage2Err" class="error-msg" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);"></div>
     </div>
-    <div id="stage2Err" class="error-msg" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);"></div>
-  </div>
 
-  <!-- المرحلة 3: ملف النوت باد المشوه والروابط المموهة -->
-  <div class="stage" id="stage3">
-    <div class="notepad">
-      <p style="color: var(--term-dim); margin-bottom: 12px;">> RECOVERED_DATA_PACKET.HEX [CORRUPTED]</p>
-      0x9A44 // TRACE <span class="fake-target" onclick="triggerLockout()">https://node-sys.net/err?id=01</span> 
-      $$#% 99201-AA <span class="fake-target" onclick="triggerLockout()">https://trace-kill.net/payload</span> 
-      *&^%$#@@@ <span class="fake-target" onclick="triggerLockout()">https://null-vault.net/hex</span> 
-      ###### ARCHIVE_CLUSTER <span class="fake-target" onclick="triggerLockout()">https://payload-host.io/log</span> 
-      
-      <!-- الرابط الصحيح بلون أفتح بدقة: #7affb2 -->
-      $$$ <span class="real-target" onclick="goToVictory()">https://pookie-terminal.matrix/root-token</span> 
-      
-      @@@! 9901283 <span class="fake-target" onclick="triggerLockout()">https://overflow-cdn.org/raw</span> 
-      !@#*&^%%% <span class="fake-target" onclick="triggerLockout()">https://firewall-auth.org/bypass</span> 
-      $$$ BUFFER: 991823901923091230912830912
-    </div>
-    <p style="color: var(--term-dim); font-size: 0.85rem; margin-top: 10px; text-align: center;">
-      تنبيه: محاولات الفحص العشوائي تنشط الحظر الأمني الفوري.
-    </p>
-  </div>
-
-  <!-- المرحلة 4: شاشة الفوز وتوثيق الرتبة -->
-  <div class="stage" id="stage4">
-    <div class="victory-container">
-      <svg class="svg-icon" style="width: 44px; height: 44px; margin-bottom: 10px;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      <h2 style="letter-spacing: 2px;">OVERRIDE ACQUIRED</h2>
-      <br>
-      <p>تم إيقاف الاختراق واستعادة أمان السيرفر بنجاح.</p>
-      <br>
-      <p>ادخلي اسمك في الديسكورد لاستخراج كود التوثيق الخاص بك:</p>
-      <br>
-      <input type="text" id="discordInput" class="cyber-input" placeholder="اسمك / يوزرك بالديسكورد" style="max-width: 320px;" autocomplete="off">
-      <br><br>
-      <button class="action-btn" onclick="generateToken()">إصدار كود الفوز</button>
-
-      <div id="resultArea" style="display: none;">
-        <div class="token-box" id="finalToken"></div>
-        <p style="font-size: 0.85rem; color: var(--term-dim);">
-          انسخي هذا الكود بالكامل وأرسليه بالخاص لتأكيد مركزك واستلام الرول.
-        </p>
+    <!-- المرحلة 3: الباينري -->
+    <div class="stage" id="stage3">
+      <div class="laptop-frame">
+        <div class="laptop-screen">
+          <p>> NETWORK BYTE DUMP: ASCII SEQUENCE</p>
+          <p>> حوّلي بايتات الـ ASCII إلى كلمة مرور حقيقية:</p>
+          <div class="binary-stream">01010010 01001111 01001111 01010100</div>
+          <p style="color: var(--term-dim); font-size: 0.85rem;">8-bit ASCII Decryption Required.</p>
+        </div>
+      </div>
+      <div class="laptop-base"></div>
+      <div class="input-wrapper">
+        <input type="text" id="stage3Input" class="cyber-input" placeholder="الكلمة المفكوكة" autocomplete="off">
+        <button class="action-btn" onclick="verifyStage3()">تجاوز البايتات</button>
+        <div id="stage3Err" class="error-msg"></div>
       </div>
     </div>
+
+    <!-- المرحلة 4: التيرمينال -->
+    <div class="stage" id="stage4">
+      <div class="cli-box">
+        <div class="cli-history" id="cliHistory">
+          <div>POOKIE SECURITY CONSOLE v3.1. اكتبي <b>help</b> لعرض الأوامر.</div>
+        </div>
+        <div class="cli-line">
+          <span>root@pookie:~#</span>
+          <input type="text" id="cliCommand" class="cli-input" autofocus autocomplete="off">
+        </div>
+      </div>
+    </div>
+
+    <!-- المرحلة 5: الروابط المموهة بالمنفذ -->
+    <div class="stage" id="stage5">
+      <div class="notepad">
+        <p style="color: var(--term-dim); margin-bottom: 12px;">> SYSTEM_BACKUP_ACCESS.LOG</p>
+        <span style="color: #006629;">// SYSTEM ADVISORY: TUNNEL CONNECTS TO SECURE PORT :1337 ONLY.</span><br>
+        0x9A44 <span class="exact-link" onclick="triggerLockout()">https://pookie-core.sys:8080/token</span> 
+        $$#% 99201 <span class="exact-link" onclick="triggerLockout()">https://pookie-auth.net:3000/token</span> 
+        *&^%$#@@@ <span class="exact-link" onclick="triggerLockout()">https://pookie-gate.org:443/token</span> 
+        ###### <span class="exact-link" onclick="triggerLockout()">https://pookie-relay.io:80/token</span> 
+        $$$ <span class="exact-link" onclick="goToStage6()">https://pookie-secure.matrix:1337/token</span> 
+        @@@! 9901283 <span class="exact-link" onclick="triggerLockout()">https://pookie-vault.co:9000/token</span> 
+        !@#*&^%%% <span class="exact-link" onclick="triggerLockout()">https://pookie-daemon.net:21/token</span> 
+      </div>
+    </div>
+
+    <!-- المرحلة 6: تسجيل الاسم والانتقال للنتائج المباشرة -->
+    <div class="stage" id="stage6">
+      <div class="victory-container">
+        <svg class="svg-icon" style="width: 44px; height: 44px; margin-bottom: 10px;" viewBox="0 0 24 24">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <h2>OVERRIDE ACQUIRED!</h2>
+        <br>
+        <p>تم اجتياز جميع العقبات بنجاح!</p>
+        <p>ادخلي اسمك / يوزرك بالديسكورد ليتم رفع نتيجتك وحساب وقتك بالثانية على لوحة الصدارة العامة:</p>
+        <br>
+        <input type="text" id="discordName" class="cyber-input" placeholder="اسمك في الديسكورد" style="max-width: 320px;" autocomplete="off">
+        <br><br>
+        <button class="action-btn" onclick="submitWinner()">تسجيل وتأكيد الفوز ⚡</button>
+        <div id="submitErr" class="error-msg"></div>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    // --- حل المرحلة 1: ترجمة الشفرات الخمس ---
-    // الشفرة رقم 3 هي الصحيحة: -... .-. . .- -.-. .... = BREACH
-    const CORRECT_MORSE_ANSWER = "BREACH";
+    // تسجيل وقت البدء بالمللي ثانية
+    const START_TIME = Date.now();
 
+    // --- خلفية الماتريكس والأكواد العشوائية المتحركة ---
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const chars = "POOKIEHACK0123456789ABCDEF$#@%&*+-=";
+    const fontSize = 14;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = "rgba(2, 5, 2, 0.08)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00ff66";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars.charAt(Math.floor(Math.random() * chars.length));
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 35);
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
+    // --- حلول المراحل ---
     function verifyStage1() {
       const val = document.getElementById('stage1Input').value.trim().toUpperCase();
-      const err = document.getElementById('stage1Err');
-      if (val === CORRECT_MORSE_ANSWER) {
-        err.textContent = "";
+      if (val === "BREACH") {
         document.getElementById('stage1').classList.remove('active');
         document.getElementById('stage2').classList.add('active');
         initFlashlight();
       } else {
-        err.textContent = "ركز بالكومبيوتر عدل: الكلمة غير متطابقة مع مسار الاختراق.";
+        document.getElementById('stage1Err').textContent = "ركز بالكومبيوتر عدل: الكود لا يطابق المسار.";
       }
     }
 
-    // --- المرحلة 2: قناع الكشاف الحقيقي بالماوس أو اللمس ---
     function initFlashlight() {
       const darkRoom = document.getElementById('darkRoom');
-
       function updateTorch(x, y) {
         darkRoom.style.setProperty('--x', x + 'px');
         darkRoom.style.setProperty('--y', y + 'px');
       }
-
       window.addEventListener('mousemove', (e) => updateTorch(e.clientX, e.clientY));
       window.addEventListener('touchmove', (e) => {
         if (e.touches.length > 0) updateTorch(e.touches[0].clientX, e.touches[0].clientY);
       });
     }
 
-    // كود دمج القطع الثلاث (NODE_A: 93 + NODE_B: 40 + NODE_C: K8)
-    const MASTER_DOOR_KEY = "9340K8";
-
     function verifyStage2() {
       const val = document.getElementById('doorInput').value.trim().toUpperCase();
-      const err = document.getElementById('stage2Err');
-      if (val === MASTER_DOOR_KEY) {
-        err.textContent = "";
+      if (val === "9340K8") {
         document.getElementById('stage2').classList.remove('active');
         document.getElementById('stage3').classList.add('active');
       } else {
-        err.textContent = "المفتاح المجمع غير صحيح!";
+        document.getElementById('stage2Err').textContent = "المفتاح المجمع غير صحيح!";
       }
     }
 
-    // --- المرحلة 3: الحظر عند النقر الخاطئ ---
+    function verifyStage3() {
+      const val = document.getElementById('stage3Input').value.trim().toUpperCase();
+      if (val === "ROOT") {
+        document.getElementById('stage3').classList.remove('active');
+        document.getElementById('stage4').classList.add('active');
+      } else {
+        document.getElementById('stage3Err').textContent = "خطأ في قراءة البايتات..";
+      }
+    }
+
+    const cliInput = document.getElementById('cliCommand');
+    const cliHistory = document.getElementById('cliHistory');
+    cliInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const cmd = this.value.trim().toLowerCase();
+        this.value = '';
+        cliHistory.innerHTML += `<div><span style="color:#00ff66;">root@pookie:~#</span> ${cmd}</div>`;
+        if (cmd === 'help') {
+          cliHistory.innerHTML += `<div>الأوامر: <b>scan</b> (فحص المسارات), <b>decrypt</b> (فك القفل)</div>`;
+        } else if (cmd === 'scan') {
+          cliHistory.innerHTML += `<div>تم التقاط المنفذ الآمن [PORT: 1337]. اكتبي <b>decrypt</b> للفتح.</div>`;
+        } else if (cmd === 'decrypt') {
+          cliHistory.innerHTML += `<div style="color:#73ffaa;">تم الفتح! جاري تحويلك...</div>`;
+          setTimeout(() => {
+            document.getElementById('stage4').classList.remove('active');
+            document.getElementById('stage5').classList.add('active');
+          }, 1000);
+        }
+        cliHistory.scrollTop = cliHistory.scrollHeight;
+      }
+    });
+
     function triggerLockout() {
       const lockout = document.getElementById('lockoutScreen');
       const timer = document.getElementById('lockoutTimer');
       lockout.style.display = 'flex';
-      let left = 20;
-      timer.textContent = left + "s";
-
-      const interval = setInterval(() => {
-        left--;
-        timer.textContent = left + "s";
-        if (left <= 0) {
-          clearInterval(interval);
+      let sec = 20;
+      timer.textContent = sec + "s";
+      const cd = setInterval(() => {
+        sec--;
+        timer.textContent = sec + "s";
+        if (sec <= 0) {
+          clearInterval(cd);
           lockout.style.display = 'none';
         }
       }, 1000);
     }
 
-    function goToVictory() {
-      document.getElementById('stage3').classList.remove('active');
-      document.getElementById('stage4').classList.add('active');
+    function goToStage6() {
+      document.getElementById('stage5').classList.remove('active');
+      document.getElementById('stage6').classList.add('active');
     }
 
-    // --- المرحلة 4: توليد التوكن الخاص لمنع التكرار والغش ---
-    function generateToken() {
-      const user = document.getElementById('discordInput').value.trim();
-      if (!user) {
-        alert("يرجى إدخال اسمك أولاً");
+    // --- إرسال النتيجة لصفحة النتائج المباشرة ---
+    // ضعي رابط Firebase Realtime Database الخاص بك هنا (توضيح الإعداد بالأسفل)
+    const FIREBASE_DB_URL = "https://YOUR-FIREBASE-PROJECT-default-rtdb.firebaseio.com/winners.json";
+
+    async function submitWinner() {
+      const name = document.getElementById('discordName').value.trim();
+      const err = document.getElementById('submitErr');
+
+      if (!name) {
+        err.textContent = "ادخلي اسمك أولاً!";
         return;
       }
-      let hash = 0;
-      for (let i = 0; i < user.length; i++) {
-        hash = (hash << 5) - hash + user.charCodeAt(i);
-        hash |= 0;
+
+      const totalSeconds = Math.floor((Date.now() - START_TIME) / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      const durationStr = `${minutes} دقيقة و ${seconds} ثانية`;
+
+      err.style.color = "var(--term)";
+      err.textContent = "جاري تسجيل نتيجتك ونقلك للوحة الشرف...";
+
+      try {
+        await fetch(FIREBASE_DB_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            username: name,
+            duration: durationStr,
+            totalSeconds: totalSeconds,
+            timestamp: Date.now()
+          }),
+          headers: { "Content-Type": "application/json" }
+        });
+
+        // التحويل مباشرة لصفحة الصدارة
+        window.location.href = "leaderboard.html";
+      } catch (e) {
+        // إذا لم تضعي رابط الفايربيس بعد، ينقلها محلياً للتجربة
+        window.location.href = `leaderboard.html?name=${encodeURIComponent(name)}&time=${encodeURIComponent(durationStr)}`;
       }
-      const token = "POOKIE-" + Math.abs(hash).toString(16).toUpperCase() + "-" + btoa(user).slice(0, 4) + "-WIN";
-      
-      document.getElementById('finalToken').textContent = token;
-      document.getElementById('resultArea').style.display = 'block';
     }
   </script>
 </body>
