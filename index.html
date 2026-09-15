@@ -530,25 +530,34 @@
       </div>
     </div>
 
-    <!-- المرحلة 4: فحص الكود المصدري Inspect Element -->
+    <!-- المرحلة 4: البحث في سجل الأكواد والنصوص (Log Dump) -->
     <div class="stage" id="stage4">
       <div class="laptop-frame">
         <div class="laptop-screen">
-          <p>> DOM INTEGRITY LOCK ACTIVATED.</p>
-          <p>> تم إخفاء مفتاح التجاوز داخل هيكل وكواليس الموقع (DOM Structure).</p>
-          <br>
-          <p style="color: #ffd700;">// تلميح: المفتاح لا يظهر على هذه الشاشة.. افتحي أدوات المطور (Inspect Element / F12) وابحثي في كود الـ HTML الداخلي!</p>
+          <p>> BUFFER OVERFLOW DETECTED: MEMORY DUMP IN PROGRESS...</p>
+          <p>> تم حشر مفتاح التجاوز الأمني داخل مصفوفة البيانات أدناه. ابحثي عنه بين الأكواد:</p>
           
-          <!-- الكود المخفي المطلوب نسخه من نافذة Inspect -->
-          <!-- ================================================= -->
-          <!-- SECRET DOM ACCESS KEY FOUND: DOM_BYPASS_99 -->
-          <!-- ================================================= -->
+          <div style="background: #010602; border: 1px solid var(--term-dim); padding: 14px; margin: 15px 0; max-height: 180px; overflow-y: auto; font-size: 0.8rem; line-height: 1.8; color: var(--term-dim); direction: ltr; text-align: left; user-select: text;">
+            0x7FFF01: 4F 50 45 4E _SYS_ERR_NULL<br>
+            0x7FFF08: [STACK_TRIP] 00 1F AA 44 BB 90<br>
+            0x7FFF12: DAEMON_PORT_LISTEN_INACTIVE<br>
+            0x7FFF20: TOKEN_STREAM: e89a-0012-ff81-cc20<br>
+            0x7FFF28: SEG_FAULT_RECOVERED_BYPASS<br>
+            0x7FFF34: >>> <span style="color: var(--term); font-weight: bold;">SECRET_KEY: [ DOM_BYPASS_99 ]</span> &lt;&lt;&lt;<br>
+            0x7FFF40: FLUSH_CACHE_BUFFER_READY<br>
+            0x7FFF48: 88 23 FF C0 11 90 EA 2B 44 91<br>
+            0x7FFF55: OVERFLOW_TRAP_DISARMED<br>
+            0x7FFF62: MEMORY_ALLOC: 0x8849204_SUCCESS<br>
+            0x7FFF70: END_OF_BLOCK_DUMP_NULL
+          </div>
+          
+          <p style="color: var(--term-dim); font-size: 0.85rem;">انسخي الكود المميز واكتبيه في خانة التخطي.</p>
         </div>
       </div>
       <div class="laptop-base"></div>
       <div class="input-wrapper">
-        <input type="text" id="stage4Input" class="cyber-input" placeholder="المفتاح المستخرج من الكود" autocomplete="off" oninput="soundTyping()">
-        <button class="action-btn" onclick="verifyStage4()">تأكيد المفتاح المصدري</button>
+        <input type="text" id="stage4Input" class="cyber-input" placeholder="المفتاح المستخرج من السجل" autocomplete="off" oninput="soundTyping()">
+        <button class="action-btn" onclick="verifyStage4()">تأكيد الكود</button>
         <div id="stage4Err" class="error-msg"></div>
       </div>
     </div>
@@ -860,7 +869,7 @@
       }
     }
 
-    // المرحلة 4: فحص الكود المصدري
+    // المرحلة 4
     function verifyStage4() {
       const val = document.getElementById('stage4Input').value.trim();
       if (val === "DOM_BYPASS_99") {
@@ -869,17 +878,16 @@
         document.getElementById('stage5').classList.add('active');
       } else {
         soundError();
-        document.getElementById('stage4Err').textContent = "المفتاح غير مطابق للكود المصدري المخفي!";
+        document.getElementById('stage4Err').textContent = "المفتاح غير مطابق لسجل الأكواد!";
       }
     }
 
-    // المرحلة 5: الصناديق العشرة
+    // المرحلة 5
     let boxesUnlocked = false;
     function unlockVaultBoxes() {
       const val = document.getElementById('discordVaultInput').value.trim();
       const err = document.getElementById('stage5Err');
       
-      // التحقق من كود الديسكورد الجديد
       if (val.toLowerCase() === "p0okie16000") {
         soundSuccess();
         boxesUnlocked = true;
@@ -945,7 +953,7 @@
       }
     }
 
-    // المرحلة 6: التيرمينال
+    // المرحلة 6
     const cliInput = document.getElementById('cliCommand');
     const cliHistory = document.getElementById('cliHistory');
     cliInput.addEventListener('keydown', function(e) {
@@ -974,7 +982,7 @@
       }
     });
 
-    // المرحلة 7: الروابط
+    // المرحلة 7
     function triggerLockout() {
       soundError();
       const lockout = document.getElementById('lockoutScreen');
@@ -998,7 +1006,7 @@
       document.getElementById('stage8').classList.add('active');
     }
 
-    // المرحلة 8: تسجيل الفوز
+    // المرحلة 8
     async function submitWinner() {
       const name = document.getElementById('discordName').value.trim();
       const err = document.getElementById('submitErr');
