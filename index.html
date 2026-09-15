@@ -37,20 +37,21 @@
       position: relative;
     }
 
-    /* زر تشغيل/كتم الصوت في الزاوية */
+    /* زر الصوت */
     .audio-toggle-btn {
       position: fixed;
       top: 15px;
       left: 15px;
-      z-index: 10000;
-      background: rgba(2, 10, 4, 0.85);
-      border: 1px solid var(--term-dim);
+      z-index: 100000;
+      background: rgba(2, 10, 4, 0.9);
+      border: 1px solid var(--term);
       color: var(--term);
-      padding: 6px 10px;
-      font-size: 0.8rem;
+      padding: 8px 12px;
+      font-size: 0.85rem;
       border-radius: 4px;
       cursor: pointer;
       font-family: inherit;
+      box-shadow: 0 0 10px rgba(0,255,102,0.3);
     }
 
     #matrixCanvas {
@@ -60,7 +61,7 @@
       width: 100vw;
       height: 100vh;
       z-index: 0;
-      opacity: 0.28;
+      opacity: 0.3;
       pointer-events: none;
     }
 
@@ -152,7 +153,6 @@
       text-align: center;
     }
 
-    /* نجمة التحكم السرية */
     .admin-star {
       display: inline-block;
       cursor: pointer;
@@ -289,68 +289,69 @@
       min-height: 18px;
     }
 
-    /* المرحلة 2: الظلام الدامس */
+    /* ---- المرحلة 2: ضبط التوسيط للغرفة المظلمة ولوحة الإدخال ---- */
     #stage2 {
       position: fixed;
-      inset: 0;
+      top: 0;
+      left: 0;
       width: 100vw;
       height: 100vh;
       background: #000;
       overflow: hidden;
       cursor: crosshair;
-      z-index: 10;
+      z-index: 9999;
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
+      padding-bottom: 45px;
     }
 
     #stage2.active {
-      display: flex;
+      display: flex !important;
     }
 
     .dark-room-content {
       position: absolute;
-      inset: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       background: #000;
-      -webkit-mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
-      mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(circle 95px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
+      mask-image: radial-gradient(circle 95px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
     }
 
     .hidden-fragment {
       position: absolute;
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--term);
       background: rgba(0, 255, 102, 0.15);
-      padding: 6px 12px;
+      padding: 8px 14px;
       border: 1px dashed var(--term);
       border-radius: 4px;
       user-select: all;
     }
 
     .dark-ui-fixed {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 20;
+      position: relative;
+      z-index: 10000;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      background: rgba(2, 8, 3, 0.92);
-      border: 1px solid var(--term-dim);
-      padding: 14px 20px;
+      gap: 10px;
+      background: rgba(2, 8, 3, 0.95);
+      border: 2px solid var(--term);
+      padding: 16px 20px;
       border-radius: 8px;
       width: 90%;
-      max-width: 380px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.8);
+      max-width: 400px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.9);
+      margin: 0 auto;
     }
 
-    /* المرحلة 3: الباينري */
+    /* المرحلة 3 */
     .binary-stream {
       background: #010602;
       border: 1px solid var(--term-dim);
@@ -365,7 +366,7 @@
       width: 100%;
     }
 
-    /* المرحلة 4: التيرمينال */
+    /* المرحلة 4 */
     .cli-box {
       width: 100%;
       background: #010803;
@@ -404,7 +405,7 @@
       font-size: 0.95rem;
     }
 
-    /* المرحلة 5: الروابط */
+    /* المرحلة 5 */
     .notepad {
       background: rgba(2, 12, 5, 0.9);
       border: 2px solid var(--term-dim);
@@ -424,7 +425,7 @@
       margin: 0 4px;
     }
 
-    /* المرحلة 6: لوحة التسجيل */
+    /* المرحلة 6 */
     .victory-container {
       background: rgba(0, 25, 10, 0.6);
       border: 2px solid var(--term);
@@ -469,12 +470,11 @@
       <h1 class="main-title">POOKIE HACK</h1>
       <div class="author-credit">
         made by aseel 
-        <!-- نجمة التحكم الخاصة بك لإعادة التصفير -->
         <span class="admin-star" onclick="openAdminPanel()" title="Admin Reset">★</span>
       </div>
     </div>
 
-    <!-- المرحلة 1: شفرات المورس -->
+    <!-- المرحلة 1 -->
     <div class="stage active" id="stage1">
       <div class="laptop-frame">
         <div class="laptop-screen">
@@ -495,20 +495,6 @@
         <input type="text" id="stage1Input" class="cyber-input" placeholder="ادخلي الكلمة الصحيحة" autocomplete="off" oninput="soundTyping()">
         <button class="action-btn" onclick="verifyStage1()">تأكيد الكود</button>
         <div id="stage1Err" class="error-msg"></div>
-      </div>
-    </div>
-
-    <!-- المرحلة 2: الظلام الدامس -->
-    <div class="stage" id="stage2">
-      <div class="dark-room-content" id="darkRoom">
-        <div class="hidden-fragment" style="top: 10%; left: 8%;">NODE_A: [93]</div>
-        <div class="hidden-fragment" style="bottom: 25%; right: 9%;">NODE_B: [40]</div>
-        <div class="hidden-fragment" style="top: 18%; right: 12%;">NODE_C: [K8]</div>
-      </div>
-      <div class="dark-ui-fixed">
-        <input type="text" id="doorInput" class="cyber-input" placeholder="المفتاح (A+B+C)" autocomplete="off" oninput="soundTyping()">
-        <button class="action-btn" onclick="verifyStage2()" style="padding: 10px 16px;">تحرير القفل</button>
-        <div id="stage2Err" class="error-msg"></div>
       </div>
     </div>
 
@@ -579,20 +565,35 @@
 
   </div>
 
+  <!-- المرحلة 2: الغرفة المظلمة -->
+  <div id="stage2">
+    <div class="dark-room-content" id="darkRoom">
+      <div class="hidden-fragment" style="top: 15%; left: 10%;">NODE_A: [93]</div>
+      <div class="hidden-fragment" style="bottom: 35%; right: 12%;">NODE_B: [40]</div>
+      <div class="hidden-fragment" style="top: 20%; right: 15%;">NODE_C: [K8]</div>
+    </div>
+    <div class="dark-ui-fixed">
+      <input type="text" id="doorInput" class="cyber-input" placeholder="المفتاح (A+B+C)" autocomplete="off" oninput="soundTyping()">
+      <button class="action-btn" onclick="verifyStage2()">تحرير القفل</button>
+      <div id="stage2Err" class="error-msg"></div>
+    </div>
+  </div>
+
   <script>
     let START_TIME = Date.now();
     const FIREBASE_DB_URL = "https://hack-d1f55-default-rtdb.firebaseio.com/winners.json";
-    const ADMIN_PASSWORD = "admin123"; // يمكنك تغيير باسورد الإدارة من هنا
+    const ADMIN_PASSWORD = "admin123";
 
-    // ---- نظام الصوت البرمجي الاحترافي (Web Audio API) ----
+    // ---- نظام الصوت ----
     let audioCtx = null;
     let isAudioMuted = false;
-    let ambientOsc = null;
 
     function initAudio() {
       if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        startAmbientDrone();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
       }
     }
 
@@ -601,49 +602,30 @@
       const btn = document.getElementById('audioToggle');
       if (isAudioMuted) {
         btn.textContent = "🔇 الصوت: مكتوم";
-        if (ambientOsc) ambientOsc.stop();
       } else {
         btn.textContent = "🔊 الصوت: مفعّل";
         initAudio();
-        startAmbientDrone();
+        soundSuccess();
       }
     }
 
-    // صوت خلفية سيبراني خافت
-    function startAmbientDrone() {
-      if (isAudioMuted || !audioCtx) return;
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(55, audioCtx.currentTime); // تردد هكر عميق
-        gain.gain.setValueAtTime(0.012, audioCtx.currentTime);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        ambientOsc = osc;
-      } catch(e){}
-    }
-
-    // صوت تكتكة البرمجة عند الكتابة
     function soundTyping() {
       if (isAudioMuted) return;
       initAudio();
       try {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(1200 + Math.random() * 400, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+        osc.type = "square";
+        osc.frequency.setValueAtTime(800 + Math.random() * 600, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.06);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.05);
+        osc.stop(audioCtx.currentTime + 0.06);
       } catch(e){}
     }
 
-    // نغمة النجاح وفتح الأبواب
     function soundSuccess() {
       if (isAudioMuted) return;
       initAudio();
@@ -652,18 +634,17 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = "triangle";
-        osc.frequency.setValueAtTime(440, now);
-        osc.frequency.exponentialRampToValueAtTime(880, now + 0.25);
-        gain.gain.setValueAtTime(0.1, now);
-        gain.gain.linearRampToValueAtTime(0, now + 0.3);
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(1040, now + 0.25);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(now + 0.3);
+        osc.stop(now + 0.35);
       } catch(e){}
     }
 
-    // نغمة الخطأ والإنذار
     function soundError() {
       if (isAudioMuted) return;
       initAudio();
@@ -672,20 +653,22 @@
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(150, now);
-        osc.frequency.linearRampToValueAtTime(90, now + 0.2);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.linearRampToValueAtTime(0, now + 0.25);
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.linearRampToValueAtTime(110, now + 0.3);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
-        osc.stop(now + 0.25);
+        osc.stop(now + 0.35);
       } catch(e){}
     }
 
     window.addEventListener('click', () => initAudio(), { once: true });
+    window.addEventListener('keydown', () => initAudio(), { once: true });
+    window.addEventListener('touchstart', () => initAudio(), { once: true });
 
-    // ---- لوحة الإدارة لإعادة التصفير عبر النجمة ★ ----
+    // لوحة تحكم الإدارة ★
     async function openAdminPanel() {
       const pass = prompt("🔐 لوحة تحكم الإدارة (Aseel):\nادخلي كلمة المرور للوصول إلى أدوات التصفير:");
       if (pass !== ADMIN_PASSWORD) {
@@ -697,7 +680,8 @@
         "اختاري الإجراء المطلوب:\n" +
         "1: تصفير وحذف قائمة الفائزين بالكامل من السيرفر (Firebase)\n" +
         "2: إعادة تصفير اللعبة وإرجاع الشاشة إلى البداية\n" +
-        "3: تصفير السيرفر واللعبة معاً"
+        "3: تصفير السيرفر واللعبة معاً\n" +
+        "4: فتح صفحة لوحة الصدارة مباشرة"
       );
 
       if (choice === "1" || choice === "3") {
@@ -711,13 +695,18 @@
 
       if (choice === "2" || choice === "3") {
         document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+        document.getElementById('stage2').classList.remove('active');
         document.getElementById('stage1').classList.add('active');
         START_TIME = Date.now();
         alert("✅ تم تصفير اللعبة وإرجاع المؤقت والمراحل من الصفر!");
       }
+
+      if (choice === "4") {
+        window.location.href = "leaderboard.html";
+      }
     }
 
-    // ---- مصفوفة الماتريكس والخلفية ----
+    // مصفوفة الماتريكس
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -749,7 +738,7 @@
       canvas.height = window.innerHeight;
     });
 
-    // ---- المراحل والتحقق ----
+    // المراحل
     function verifyStage1() {
       const val = document.getElementById('stage1Input').value.trim().toUpperCase();
       if (val === "BREACH") {
