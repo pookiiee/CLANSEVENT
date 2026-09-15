@@ -3,23 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PROJECT // APEX_BREACH</title>
-  <!-- 
-    [CLASSIFIED SECURITY COMMENT]
-    AGENT NOTICE:
-    1. Visual signal follows international morse code.
-    2. The deciphered morse text is encoded with Caesar Cipher (Shift -2).
-    3. Fragments in the darkness compose the primary door masterkey.
-  -->
+  <title>POOKIE HACK // OVERRIDE</title>
   <style>
     :root {
-      --bg: #030604;
-      --term-green: #00ff66;
-      --term-dim: #007a30;
-      --term-fake: #00ff66;
-      --term-real: #12f570;
-      --alert-red: #ff2a3b;
-      --panel-bg: #040e06;
+      --bg: #030704;
+      --term: #00ff66;
+      --term-dim: #008f39;
+      --term-dark: #00260e;
+      --alert: #ff2a3b;
+      --link-fake: #00ff66;
+      --link-real: #7affb2;
     }
 
     * {
@@ -30,17 +23,18 @@
 
     body {
       background-color: var(--bg);
-      color: var(--term-green);
+      color: var(--term);
       font-family: 'Courier New', Courier, monospace;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 15px;
+      padding: 20px;
       overflow-x: hidden;
     }
 
+    /* خطوط الشاشة CRT */
     .scanlines {
       position: fixed;
       top: 0; left: 0;
@@ -56,6 +50,27 @@
       z-index: 999;
     }
 
+    /* الهيدر الرئيسي */
+    .header-branding {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .main-title {
+      font-size: 2.2rem;
+      letter-spacing: 5px;
+      color: var(--term);
+      text-shadow: 0 0 12px rgba(0, 255, 102, 0.5);
+    }
+
+    .author-credit {
+      font-size: 0.85rem;
+      color: var(--term-dim);
+      letter-spacing: 3px;
+      margin-top: 5px;
+      text-transform: lowercase;
+    }
+
     .stage {
       display: none;
       width: 100%;
@@ -68,23 +83,23 @@
       display: flex;
     }
 
-    /* ---- المرحلة 1 ---- */
+    /* تصميم شاشة اللابتوب للمرحلة 1 */
     .laptop-frame {
       width: 100%;
       background: #111;
-      border: 3px solid #282828;
+      border: 3px solid #222;
       border-radius: 12px 12px 2px 2px;
       padding: 14px;
-      box-shadow: 0 0 35px rgba(0, 255, 102, 0.12);
+      box-shadow: 0 0 35px rgba(0, 255, 102, 0.1);
     }
 
     .laptop-screen {
-      background: #020903;
+      background: #020b04;
       border: 1px solid var(--term-dim);
       border-radius: 6px;
-      padding: 22px;
+      padding: 20px;
       min-height: 320px;
-      line-height: 1.6;
+      line-height: 1.7;
       font-size: 0.95rem;
     }
 
@@ -96,44 +111,34 @@
       margin-bottom: 25px;
     }
 
-    .morse-hardware-box {
-      margin: 18px 0;
-      padding: 14px;
-      border: 1px dashed var(--term-dim);
-      border-radius: 6px;
+    .morse-grid {
       display: flex;
-      align-items: center;
-      gap: 15px;
-      background: rgba(0, 255, 102, 0.03);
+      flex-direction: column;
+      gap: 12px;
+      margin: 18px 0;
     }
 
-    .signal-led {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: #112918;
-      border: 2px solid var(--term-dim);
-      transition: background 0.05s, box-shadow 0.05s;
-    }
-
-    .signal-led.active {
-      background: #5cff9d;
-      box-shadow: 0 0 18px #00ff66;
-    }
-
-    .action-btn {
-      background: var(--term-green);
-      color: #000;
-      font-weight: bold;
-      border: none;
-      padding: 10px 18px;
+    .morse-block {
+      background: rgba(0, 255, 102, 0.04);
+      border: 1px solid var(--term-dim);
       border-radius: 4px;
-      cursor: pointer;
-      font-family: inherit;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      direction: ltr;
     }
 
-    .action-btn:hover {
-      background: #7affaf;
+    .morse-code {
+      font-size: 1.1rem;
+      letter-spacing: 3px;
+      user-select: all;
+      color: #9dffc8;
+    }
+
+    .morse-tag {
+      font-size: 0.8rem;
+      color: var(--term-dim);
     }
 
     .input-wrapper {
@@ -146,9 +151,9 @@
 
     .cyber-input {
       width: 100%;
-      background: #020a03;
-      border: 2px solid var(--term-green);
-      color: var(--term-green);
+      background: #020b04;
+      border: 2px solid var(--term);
+      color: var(--term);
       padding: 12px;
       font-size: 1rem;
       font-family: inherit;
@@ -157,14 +162,31 @@
       outline: none;
     }
 
+    .action-btn {
+      background: var(--term);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #5cff9d;
+    }
+
     .error-msg {
-      color: var(--alert-red);
+      color: var(--alert);
       font-size: 0.85rem;
       text-align: center;
       min-height: 18px;
     }
 
-    /* ---- المرحلة 2: الغرفة والبطارية ---- */
+    /* ---- المرحلة 2: الغرفة المظلمة والكشاف الحقيقي ---- */
     #stage2 {
       position: fixed;
       top: 0; left: 0;
@@ -175,88 +197,75 @@
       cursor: crosshair;
     }
 
-    .torch-overlay {
+    /* طبقة المحتوى المظلم التي لا ترى إلا بقناع الضوء */
+    .dark-room-content {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      pointer-events: none;
-      background: radial-gradient(
-        circle 95px at var(--x, 50%) var(--y, 50%),
-        transparent 0%,
-        rgba(0, 0, 0, 0.99) 100%
-      );
-    }
-
-    .hud-battery {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 10;
-      font-size: 0.9rem;
-      color: var(--term-green);
-      background: rgba(0,0,0,0.7);
-      padding: 8px 12px;
-      border: 1px solid var(--term-dim);
-      border-radius: 4px;
-      pointer-events: auto;
+      background: #000;
+      /* القناع المظلم الحقيقي */
+      -webkit-mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
+      mask-image: radial-gradient(circle 85px at var(--x, -500px) var(--y, -500px), black 0%, transparent 100%);
     }
 
     .hidden-fragment {
       position: absolute;
-      font-size: 0.9rem;
-      color: var(--term-green);
-      background: rgba(0, 255, 102, 0.1);
-      padding: 6px 10px;
-      border: 1px dotted var(--term-dim);
-      user-select: all;
-    }
-
-    .recharge-btn {
-      position: absolute;
-      bottom: 25px;
-      right: 25px;
-      background: transparent;
-      border: 1px solid rgba(0, 255, 102, 0.4);
-      color: var(--term-green);
+      font-size: 0.95rem;
+      color: var(--term);
+      background: rgba(0, 255, 102, 0.15);
       padding: 6px 12px;
-      font-family: inherit;
-      cursor: pointer;
+      border: 1px dashed var(--term);
+      border-radius: 4px;
     }
 
-    .door-panel {
+    .door-center {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(0, 15, 5, 0.95);
-      border: 2px solid var(--term-green);
+      border: 1px solid var(--term);
+      background: #030c05;
       padding: 20px;
       text-align: center;
       border-radius: 6px;
-      z-index: 5;
     }
 
-    /* ---- المرحلة 3: الروابط والحظر ---- */
+    /* لوحة التحكم الثابتة فوق الظلام للإدخال */
+    .dark-ui-fixed {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      gap: 10px;
+      background: rgba(3, 10, 5, 0.9);
+      border: 1px solid var(--term-dim);
+      padding: 12px 18px;
+      border-radius: 8px;
+    }
+
+    /* ---- المرحلة 3: تدرج الألوان الدقيق والحظر ---- */
     .notepad {
-      background: var(--panel-bg);
+      background: #020c05;
       border: 2px solid var(--term-dim);
       border-radius: 6px;
-      padding: 25px;
+      padding: 24px;
       width: 100%;
-      line-height: 2;
+      line-height: 2.1;
       font-size: 0.95rem;
       word-break: break-all;
     }
 
     .fake-target {
-      color: var(--term-fake);
+      color: var(--link-fake);
       text-decoration: underline;
       cursor: pointer;
       margin: 0 4px;
     }
 
     .real-target {
-      color: var(--term-real);
+      color: var(--link-real);
       text-decoration: underline;
       cursor: pointer;
       margin: 0 4px;
@@ -267,8 +276,8 @@
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: rgba(18, 0, 0, 0.98);
-      color: var(--alert-red);
+      background: rgba(15, 2, 4, 0.98);
+      color: var(--alert);
       display: none;
       flex-direction: column;
       align-items: center;
@@ -278,19 +287,19 @@
       padding: 20px;
     }
 
-    /* ---- المرحلة 4: التحقق الفريد لمنع الغش ---- */
+    /* المرحلة 4: التحقق وتوثيق الفوز */
     .victory-container {
-      background: rgba(0, 30, 12, 0.5);
-      border: 2px solid var(--term-green);
-      padding: 30px;
+      background: rgba(0, 30, 12, 0.45);
+      border: 2px solid var(--term);
+      padding: 35px 25px;
       border-radius: 8px;
       text-align: center;
       width: 100%;
     }
 
-    .cert-token {
+    .token-box {
       background: #000;
-      border: 2px dashed var(--term-green);
+      border: 2px dashed var(--term);
       padding: 16px;
       margin: 20px 0;
       font-size: 1.25rem;
@@ -298,257 +307,217 @@
       word-break: break-all;
       user-select: all;
     }
+
+    .svg-icon {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+      fill: currentColor;
+      display: inline-block;
+      margin-left: 6px;
+    }
   </style>
 </head>
 <body>
 
   <div class="scanlines"></div>
 
-  <!-- قفل الحظر عند التخمين العشوائي -->
-  <div class="lockout-screen" id="lockoutScreen">
-    <h1 style="font-size: 2.2rem; margin-bottom: 15px;">⚠️ LOCKOUT ACTIVE ⚠️</h1>
-    <p>تم التقاط نشاط تخمين فوضوي وتفعيل جدار الحماية المضاد!</p>
-    <br>
-    <p>الانتظار حتى انتهاء الفحص الأمني:</p>
-    <h2 id="lockoutTimer" style="font-size: 2.5rem; margin-top: 10px;">20s</h2>
+  <!-- الهيدر الموحد -->
+  <div class="header-branding">
+    <h1 class="main-title">POOKIE HACK</h1>
+    <div class="author-credit">made by aseel</div>
   </div>
 
-  <!-- المرحلة 1: الوميض والصوت وشفرة القيصر -->
+  <!-- قفل الحظر عند النقر الخاطئ على الروابط -->
+  <div class="lockout-screen" id="lockoutScreen">
+    <svg class="svg-icon" style="width: 48px; height: 48px; margin-bottom: 12px;" viewBox="0 0 24 24">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+    </svg>
+    <h2 style="font-size: 1.8rem; margin-bottom: 8px;">SECURITY LOCKOUT</h2>
+    <p>تم التقاط مسار وهمي وتنشيط جدار الحظر الأمني المؤقت.</p>
+    <br>
+    <div id="lockoutTimer" style="font-size: 2.4rem; font-weight: bold;">20s</div>
+  </div>
+
+  <!-- المرحلة 1: شاشة اللابتوب و5 شفرات مورس -->
   <div class="stage active" id="stage1">
     <div class="laptop-frame">
       <div class="laptop-screen">
-        <p>> ENCRYPTED BEACON INTERCEPTED...</p>
-        <p>> CAUTION: RAW TEXT OBFUSCATED VIA ROT-X DISPLACEMENT.</p>
-        <br>
-        <div class="morse-hardware-box">
-          <div class="signal-led" id="morseLed"></div>
-          <button class="action-btn" onclick="playMorseTransmission()">تشغيل إشارة البث الضوئي/الصوتي</button>
-          <span style="font-size: 0.8rem; color: var(--term-dim);">[استمع وركز بتوقيت الوميض]</span>
+        <p>> PROTOCOL INTERCEPTED: 5 RECON BEACONS FOUND.</p>
+        <p>> تم رصد 5 مصفوفات تشفير، شفرة واحدة فقط تحمل الكلمة الحقيقية لتجاوز الجدار:</p>
+        
+        <div class="morse-grid">
+          <!-- 1: CIPHER_DUMMY_1 (DECAY) -->
+          <div class="morse-block">
+            <span class="morse-tag">[FEED_01]</span>
+            <span class="morse-code">-.. . -.-. .- -.--</span>
+          </div>
+          <!-- 2: CIPHER_DUMMY_2 (TOXIC) -->
+          <div class="morse-block">
+            <span class="morse-tag">[FEED_02]</span>
+            <span class="morse-code">- --- -..- .. -.-.</span>
+          </div>
+          <!-- 3: CIPHER_REAL (BREACH) الشفرة الصحيحة -->
+          <div class="morse-block">
+            <span class="morse-tag">[FEED_03]</span>
+            <span class="morse-code">-... .-. . .- -.-. ....</span>
+          </div>
+          <!-- 4: CIPHER_DUMMY_3 (GHOST) -->
+          <div class="morse-block">
+            <span class="morse-tag">[FEED_04]</span>
+            <span class="morse-code">--. .... --- ... -</span>
+          </div>
+          <!-- 5: CIPHER_DUMMY_4 (RESET) -->
+          <div class="morse-block">
+            <span class="morse-tag">[FEED_05]</span>
+            <span class="morse-code">.-. . ... . -</span>
+          </div>
         </div>
+
         <p style="color: var(--term-dim); font-size: 0.85rem;">
-          ملاحظة الأمان: النص المستخرج من النمط محمي بإزاحة تراجع (Shift -2).
+          فككي الشفرات لاكتشاف الكلمة التي تطابق مفتاح الاختراق الرئيسي.
         </p>
       </div>
     </div>
     <div class="laptop-base"></div>
 
     <div class="input-wrapper">
-      <input type="text" id="stage1Input" class="cyber-input" placeholder="اكتب الكلمة الأصلية بعد فك التشفير" autocomplete="off">
-      <button class="action-btn" onclick="verifyStage1()">كسر الجدار الأول</button>
+      <input type="text" id="stage1Input" class="cyber-input" placeholder="ادخل الكلمة المترجمة الصحيحة" autocomplete="off">
+      <button class="action-btn" onclick="verifyStage1()">
+        <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        تأكيد المفتاح
+      </button>
       <div id="stage1Err" class="error-msg"></div>
     </div>
   </div>
 
-  <!-- المرحلة 2: الغرفة المظلمة، البطارية وقطع المفتاح -->
+  <!-- المرحلة 2: الغرفة المظلمة كلياً والكشاف الحقيقي -->
   <div class="stage" id="stage2">
-    <div class="torch-overlay" id="torch"></div>
-    
-    <div class="hud-battery">
-      طاقة الكشاف: <span id="batVal">100%</span>
+    <div class="dark-room-content" id="darkRoom">
+      <!-- قطع الرموز الثلاث مخفية في زوايا متباعدة -->
+      <div class="hidden-fragment" style="top: 8%; left: 10%;">NODE_A: [93]</div>
+      <div class="hidden-fragment" style="bottom: 18%; right: 8%;">NODE_B: [40]</div>
+      <div class="hidden-fragment" style="top: 14%; right: 12%;">NODE_C: [K8]</div>
+
+      <div class="door-center">
+        <svg class="svg-icon" style="width: 28px; height: 28px;" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+        <p style="margin-top: 6px;">بوابة العبور مشفرة</p>
+      </div>
     </div>
 
-    <!-- قطع المفتاح الثلاث المبعثرة بالظلام -->
-    <div class="hidden-fragment" style="top: 8%; left: 8%;">FRAGMENT_A: [71]</div>
-    <div class="hidden-fragment" style="bottom: 12%; right: 9%;">FRAGMENT_B: [09]</div>
-    <div class="hidden-fragment" style="top: 15%; right: 12%;">FRAGMENT_C: [X4]</div>
-
-    <!-- زر إعادة شحن البطارية مخفي في زاوية أخرى -->
-    <button class="recharge-btn" onclick="rechargeBattery()">⚡ خلية طاقة احتياطية</button>
-
-    <!-- وحدة إدخال فتح البوابة في منتصف الغرفة -->
-    <div class="door-panel">
-      <p style="margin-bottom: 8px;">ادخل المفتاح المجمع (A + B + C):</p>
-      <input type="text" id="doorCode" class="cyber-input" placeholder="Key" style="max-width: 200px; margin-bottom: 8px;" autocomplete="off">
-      <br>
-      <button class="action-btn" onclick="verifyStage2()">تحرير القفل</button>
-      <div id="stage2Err" class="error-msg"></div>
+    <!-- لوحة كتابة الكود الثابتة بالأسفل -->
+    <div class="dark-ui-fixed">
+      <input type="text" id="doorInput" class="cyber-input" placeholder="اجمعي القطع (A + B + C)" style="width: 210px;" autocomplete="off">
+      <button class="action-btn" onclick="verifyStage2()" style="padding: 10px 16px;">فتح</button>
     </div>
+    <div id="stage2Err" class="error-msg" style="position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);"></div>
   </div>
 
-  <!-- المرحلة 3: النوت باد المشوه، تمويه الألوان، والحظر -->
+  <!-- المرحلة 3: ملف النوت باد المشوه والروابط المموهة -->
   <div class="stage" id="stage3">
     <div class="notepad">
-      <p style="color: var(--term-dim); margin-bottom: 10px;">> DUMP_RECON_CORRUPTED.HEX</p>
-      §§§#0192 <span class="fake-target" onclick="triggerPenalty()">http://auth-relay.zero/d/01</span> 
-      !#% 8812-AA <span class="fake-target" onclick="triggerPenalty()">http://trace-guard.vpn/gate</span> 
-      *&^%$#@@@ <span class="fake-target" onclick="triggerPenalty()">http://null-vault.net/hex</span> 
-      ###### CLOUD_SYS <span class="fake-target" onclick="triggerPenalty()">http://payload-host.io/log</span> 
+      <p style="color: var(--term-dim); margin-bottom: 12px;">> RECOVERED_DATA_PACKET.HEX [CORRUPTED]</p>
+      0x9A44 // TRACE <span class="fake-target" onclick="triggerLockout()">https://node-sys.net/err?id=01</span> 
+      $$#% 99201-AA <span class="fake-target" onclick="triggerLockout()">https://trace-kill.net/payload</span> 
+      *&^%$#@@@ <span class="fake-target" onclick="triggerLockout()">https://null-vault.net/hex</span> 
+      ###### ARCHIVE_CLUSTER <span class="fake-target" onclick="triggerLockout()">https://payload-host.io/log</span> 
       
-      <!-- الرابط الصحيح بلون أدق وأفتح قليلاً #12f570 مقابل #00ff66 -->
-      $$$ <span class="real-target" onclick="goToVictory()">http://core-override.matrix/root-token</span> 
+      <!-- الرابط الصحيح بلون أفتح بدقة: #7affb2 -->
+      $$$ <span class="real-target" onclick="goToVictory()">https://pookie-terminal.matrix/root-token</span> 
       
-      @@@! 9901283 <span class="fake-target" onclick="triggerPenalty()">http://overflow-cdn.org/raw</span> 
-      !@#*&^%%% <span class="fake-target" onclick="triggerPenalty()">http://firewall-auth.org/bypass</span> 
+      @@@! 9901283 <span class="fake-target" onclick="triggerLockout()">https://overflow-cdn.org/raw</span> 
+      !@#*&^%%% <span class="fake-target" onclick="triggerLockout()">https://firewall-auth.org/bypass</span> 
       $$$ BUFFER: 991823901923091230912830912
     </div>
+    <p style="color: var(--term-dim); font-size: 0.85rem; margin-top: 10px; text-align: center;">
+      تنبيه: محاولات الفحص العشوائي تنشط الحظر الأمني الفوري.
+    </p>
   </div>
 
-  <!-- المرحلة 4: تأكيد الهوية الفريد ومنع الغش -->
+  <!-- المرحلة 4: شاشة الفوز وتوثيق الرتبة -->
   <div class="stage" id="stage4">
     <div class="victory-container">
-      <h2>🏆 ACCESS GRANTED // OVERRIDE COMPLETE</h2>
+      <svg class="svg-icon" style="width: 44px; height: 44px; margin-bottom: 10px;" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <h2 style="letter-spacing: 2px;">OVERRIDE ACQUIRED</h2>
       <br>
-      <p>تم إيقاف الهجوم بنجاح وتفكيك جميع حواجز التشفير!</p>
+      <p>تم إيقاف الاختراق واستعادة أمان السيرفر بنجاح.</p>
       <br>
-      <p>لإصدار كود الفوز الفريد ومنع تكراره، ادخلي اسمك / يوزرك بالديسكورد:</p>
+      <p>ادخلي اسمك في الديسكورد لاستخراج كود التوثيق الخاص بك:</p>
       <br>
-      <input type="text" id="discordUser" class="cyber-input" placeholder="اسمك في الديسكورد (مثال: Aseel#0000)" style="max-width: 320px;" autocomplete="off">
+      <input type="text" id="discordInput" class="cyber-input" placeholder="اسمك / يوزرك بالديسكورد" style="max-width: 320px;" autocomplete="off">
       <br><br>
-      <button class="action-btn" onclick="generateVictoryPass()">توليد كود التوثيق</button>
+      <button class="action-btn" onclick="generateToken()">إصدار كود الفوز</button>
 
-      <div id="certOutput" style="display: none;">
-        <div class="cert-token" id="tokenBox"></div>
+      <div id="resultArea" style="display: none;">
+        <div class="token-box" id="finalToken"></div>
         <p style="font-size: 0.85rem; color: var(--term-dim);">
-          * انسخي الكود بالكامل مع الرمز وشاركيه في الخاص فوراً لتثبيت رتبتك!
+          انسخي هذا الكود بالكامل وأرسليه بالخاص لتأكيد مركزك واستلام الرول.
         </p>
       </div>
     </div>
   </div>
 
   <script>
-    // --- منطق الصوت والوميض (المرحلة 1) ---
-    // كلمة الإشارة: JCNNQ
-    // شفرة مورس: J (.---) C (-.-.) N (-.) N (-.) Q (--.-)
-    const MORSE_PATTERN = [
-      // J (.---)
-      1,0,3,0,3,0,3,0,0,
-      // C (-.-.)
-      3,0,1,0,3,0,1,0,0,
-      // N (-.)
-      3,0,1,0,0,
-      // N (-.)
-      3,0,1,0,0,
-      // Q (--.-)
-      3,0,3,0,1,0,3
-    ];
+    // --- حل المرحلة 1: ترجمة الشفرات الخمس ---
+    // الشفرة رقم 3 هي الصحيحة: -... .-. . .- -.-. .... = BREACH
+    const CORRECT_MORSE_ANSWER = "BREACH";
 
-    let audioCtx = null;
-    let isTransmitting = false;
-
-    function beep(duration, cb) {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(750, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      setTimeout(() => {
-        osc.stop();
-        if (cb) cb();
-      }, duration);
-    }
-
-    function playMorseTransmission() {
-      if (isTransmitting) return;
-      isTransmitting = true;
-      const led = document.getElementById('morseLed');
-      const unit = 130;
-      let i = 0;
-
-      function step() {
-        if (i >= MORSE_PATTERN.length) {
-          isTransmitting = false;
-          led.classList.remove('active');
-          return;
-        }
-
-        const val = MORSE_PATTERN[i];
-        if (val > 0) {
-          led.classList.add('active');
-          beep(val * unit, () => {
-            led.classList.remove('active');
-            i++;
-            setTimeout(step, unit);
-          });
-        } else {
-          led.classList.remove('active');
-          i++;
-          setTimeout(step, unit * 2);
-        }
-      }
-      step();
-    }
-
-    // التحقق من حل المرحلة 1 (JCNNQ بعد إزاحة حرفين للخلف تعطي HELLO)
     function verifyStage1() {
       const val = document.getElementById('stage1Input').value.trim().toUpperCase();
       const err = document.getElementById('stage1Err');
-      if (val === 'HELLO') {
+      if (val === CORRECT_MORSE_ANSWER) {
         err.textContent = "";
         document.getElementById('stage1').classList.remove('active');
         document.getElementById('stage2').classList.add('active');
-        initStage2();
+        initFlashlight();
       } else {
-        err.textContent = "خطأ في فك التشفير: راجع الإزاحة والنمط الصوتي.";
+        err.textContent = "ركز بالكومبيوتر عدل: الكلمة غير متطابقة مع مسار الاختراق.";
       }
     }
 
-    // --- منطق الغرفة والبطارية (المرحلة 2) ---
-    let battery = 100;
-    let batInterval = null;
+    // --- المرحلة 2: قناع الكشاف الحقيقي بالماوس أو اللمس ---
+    function initFlashlight() {
+      const darkRoom = document.getElementById('darkRoom');
 
-    function initStage2() {
-      const torch = document.getElementById('torch');
-      const batLabel = document.getElementById('batVal');
-
-      function moveTorch(x, y) {
-        torch.style.setProperty('--x', x + 'px');
-        torch.style.setProperty('--y', y + 'px');
+      function updateTorch(x, y) {
+        darkRoom.style.setProperty('--x', x + 'px');
+        darkRoom.style.setProperty('--y', y + 'px');
       }
 
-      window.addEventListener('mousemove', (e) => moveTorch(e.clientX, e.clientY));
+      window.addEventListener('mousemove', (e) => updateTorch(e.clientX, e.clientY));
       window.addEventListener('touchmove', (e) => {
-        if (e.touches.length > 0) moveTorch(e.touches[0].clientX, e.touches[0].clientY);
+        if (e.touches.length > 0) updateTorch(e.touches[0].clientX, e.touches[0].clientY);
       });
-
-      // استنزاف طاقة البطارية كل ثانية
-      batInterval = setInterval(() => {
-        if (battery > 0) {
-          battery -= 2;
-          batLabel.textContent = battery + "%";
-          if (battery <= 0) {
-            torch.style.opacity = "0"; // انطفاء الكشاف
-            batLabel.textContent = "0% (نفدت الطاقة!)";
-          }
-        }
-      }, 700);
     }
 
-    function rechargeBattery() {
-      battery = 100;
-      document.getElementById('batVal').textContent = "100%";
-      document.getElementById('torch').style.opacity = "1";
-    }
+    // كود دمج القطع الثلاث (NODE_A: 93 + NODE_B: 40 + NODE_C: K8)
+    const MASTER_DOOR_KEY = "9340K8";
 
     function verifyStage2() {
-      const val = document.getElementById('doorCode').value.trim().toUpperCase();
+      const val = document.getElementById('doorInput').value.trim().toUpperCase();
       const err = document.getElementById('stage2Err');
-      // المفتاح المدمج من الأجزاء الثلاثة: 71 + 09 + X4
-      if (val === '7109X4') {
-        clearInterval(batInterval);
+      if (val === MASTER_DOOR_KEY) {
+        err.textContent = "";
         document.getElementById('stage2').classList.remove('active');
         document.getElementById('stage3').classList.add('active');
       } else {
-        err.textContent = "مفتاح الدخول غير صالح!";
+        err.textContent = "المفتاح المجمع غير صحيح!";
       }
     }
 
-    // --- المرحلة 3: الحظر والعقوبة المؤقتة ---
-    function triggerPenalty() {
+    // --- المرحلة 3: الحظر عند النقر الخاطئ ---
+    function triggerLockout() {
       const lockout = document.getElementById('lockoutScreen');
       const timer = document.getElementById('lockoutTimer');
       lockout.style.display = 'flex';
-      let sec = 20;
-      timer.textContent = sec + "s";
+      let left = 20;
+      timer.textContent = left + "s";
 
-      const cd = setInterval(() => {
-        sec--;
-        timer.textContent = sec + "s";
-        if (sec <= 0) {
-          clearInterval(cd);
+      const interval = setInterval(() => {
+        left--;
+        timer.textContent = left + "s";
+        if (left <= 0) {
+          clearInterval(interval);
           lockout.style.display = 'none';
         }
       }, 1000);
@@ -559,24 +528,22 @@
       document.getElementById('stage4').classList.add('active');
     }
 
-    // --- المرحلة 4: توليد كود الهاش المقاوم للغش ---
-    function generateVictoryPass() {
-      const username = document.getElementById('discordUser').value.trim();
-      if (!username) {
-        alert("يرجى إدخال اسمك أولاً!");
+    // --- المرحلة 4: توليد التوكن الخاص لمنع التكرار والغش ---
+    function generateToken() {
+      const user = document.getElementById('discordInput').value.trim();
+      if (!user) {
+        alert("يرجى إدخال اسمك أولاً");
         return;
       }
-      
-      // توليد تشفير بسيط فريد يربط الاسم بختم زمني
       let hash = 0;
-      for (let i = 0; i < username.length; i++) {
-        hash = (hash << 5) - hash + username.charCodeAt(i);
+      for (let i = 0; i < user.length; i++) {
+        hash = (hash << 5) - hash + user.charCodeAt(i);
         hash |= 0;
       }
-      const token = "SIG-" + Math.abs(hash).toString(16).toUpperCase() + "-" + btoa(username).slice(0, 5) + "-OK";
-
-      document.getElementById('tokenBox').textContent = token;
-      document.getElementById('certOutput').style.display = 'block';
+      const token = "POOKIE-" + Math.abs(hash).toString(16).toUpperCase() + "-" + btoa(user).slice(0, 4) + "-WIN";
+      
+      document.getElementById('finalToken').textContent = token;
+      document.getElementById('resultArea').style.display = 'block';
     }
   </script>
 </body>
