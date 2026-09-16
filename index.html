@@ -54,7 +54,7 @@
       background: rgba(0, 255, 102, 0.15);
     }
 
-    /* شريط تنقل الأدمن السفلي (الأسهم) */
+    /* شريط أسهم الأدمن العائم */
     .admin-nav-bar {
       position: fixed;
       bottom: 15px;
@@ -530,7 +530,7 @@
   <canvas id="matrixCanvas"></canvas>
   <div class="scanlines"></div>
 
-  <!-- شريط أسهم التحكم الخاص بالأدمن في أسفل الشاشة -->
+  <!-- شريط أسهم الأدمن العائم أسفل الشاشة -->
   <div class="admin-nav-bar" id="adminNavBar">
     <button class="admin-nav-btn" onclick="prevStageAdmin()" title="المرحلة السابقة">◀</button>
     <select class="admin-stage-select" id="adminStageSelect" onchange="jumpToStage(parseInt(this.value))">
@@ -608,39 +608,25 @@
       </div>
     </div>
 
-    <!-- المرحلة 4: سجل الأكواد والنصوص المموّهة -->
+    <!-- المرحلة 4: سجل الأكواد (المعدلة للأسهل) -->
     <div class="stage" id="stage4">
       <div class="laptop-frame">
         <div class="laptop-screen">
-          <p>> BUFFER OVERFLOW DETECTED: RAW SYSTEM LOG DUMP...</p>
-          <p id="t_s4_desc">> تم حشر مفتاح التجاوز الأمني داخل مصفوفة بيانات الذاكرة التالية. ابحثي عنه بدقة:</p>
+          <p>> BUFFER OVERFLOW DETECTED: MEMORY TRACE...</p>
+          <p id="t_s4_desc">> تم حشر مفتاح التجاوز داخل مصفوفة السجل. دقيقي بين الأسطر لاستخراجه:</p>
           
-          <div style="background: #010602; border: 1px solid var(--term-dim); padding: 14px; margin: 15px 0; max-height: 200px; overflow-y: auto; font-size: 0.78rem; line-height: 1.85; color: var(--term-dim); direction: ltr; text-align: left; user-select: text;">
-            0x7FFF00: 4F 50 45 4E _SYS_ERR_NULL INIT_SEQUENCE<br>
-            0x7FFF04: [STACK_TRIP] 00 1F AA 44 BB 90 22 10<br>
-            0x7FFF09: DAEMON_PORT_LISTEN_INACTIVE_0x00<br>
-            0x7FFF0F: TOKEN_STREAM: e89a-0012-ff81-cc20-8801<br>
-            0x7FFF15: SEG_FAULT_RECOVERED_BYPASS_PTR<br>
-            0x7FFF1C: PACKET_BURST_CHECKSUM_OK [0x99201]<br>
-            0x7FFF22: INTRUSION_DETECTION_DISABLED_ROOT<br>
-            0x7FFF28: HEAP_BLOCK: 0x88914A 12 00 FF A3 EE 01<br>
-            0x7FFF2F: RAW_BYTE_STREAM: 43 4C 41 4E 5F 53 59 53<br>
-            0x7FFF35: REVERSE_PROXY_CHAIN_RESOLVED_GATEWAY<br>
-            0x7FFF3C: SYS_VAR_INJECT: DOM_BYPASS_99<br>
-            0x7FFF42: FLUSH_CACHE_BUFFER_READY_SIG_KILL<br>
-            0x7FFF48: 88 23 FF C0 11 90 EA 2B 44 91 CC 04<br>
-            0x7FFF50: OVERFLOW_TRAP_DISARMED_BY_THREAD_0<br>
-            0x7FFF58: ALLOC_MEM: 0x8849204_BLOCK_ALLOCATED<br>
-            0x7FFF60: REG_DX: 00000000_0000FFFF_SYSTEM_CORE<br>
-            0x7FFF67: SESSION_KEY_SALT: 9b882ac710ef39014a<br>
-            0x7FFF70: CIPHER_ROTATION_SYNC_STATE: STABLE<br>
-            0x7FFF78: NETWORK_SOCKET_KEEP_ALIVE: ACK_RECV<br>
-            0x7FFF80: KERNEL_PANIC_PREVENTED_HANDLER_EXEC<br>
-            0x7FFF87: THREAD_WATCHDOG_TIMER_RESET_SUCCESS<br>
-            0x7FFF90: END_OF_CORE_RAM_IMAGE_SEGMENT_NULL
+          <div style="background: #010602; border: 1px solid var(--term-dim); padding: 14px; margin: 15px 0; max-height: 160px; overflow-y: auto; font-size: 0.82rem; line-height: 1.9; color: var(--term-dim); direction: ltr; text-align: left; user-select: text;">
+            0x7FFF00: INIT_SEQUENCE // STACK_OK<br>
+            0x7FFF08: TOKEN_BURST: e89a-0012-ff81<br>
+            0x7FFF12: PORT_INACTIVE // BYPASS_PTR<br>
+            0x7FFF20: >>> [TARGET_KEY]: DOM_BYPASS_99 &lt;&lt;&lt;<br>
+            0x7FFF28: FLUSH_CACHE_BUFFER_READY<br>
+            0x7FFF34: 88 23 FF C0 11 90 EA 2B 44<br>
+            0x7FFF40: ALLOC_MEM_BLOCK_SUCCESS<br>
+            0x7FFF50: END_OF_STREAM_SEGMENT
           </div>
           
-          <p id="t_s4_hint" style="color: var(--term-dim); font-size: 0.85rem;">المفتاح المطلوب: القيمة بعد رمز الحقن المتغير.</p>
+          <p id="t_s4_hint" style="color: var(--term-dim); font-size: 0.85rem;">المفتاح المطلوب هو القيمة المجاورة لـ TARGET_KEY.</p>
         </div>
       </div>
       <div class="laptop-base"></div>
@@ -782,8 +768,8 @@
         s3_ph: "الكلمة المفكوكة",
         s3_btn: "تجاوز البايتات",
         s3_err: "خطأ في فك تشفير البايتات..",
-        s4_desc: "> تم حشر مفتاح التجاوز الأمني داخل مصفوفة بيانات الذاكرة التالية. ابحثي عنه بدقة:",
-        s4_hint: "المفتاح المطلوب: القيمة بعد رمز الحقن المتغير.",
+        s4_desc: "> تم حشر مفتاح التجاوز داخل مصفوفة السجل. دقيقي بين الأسطر لاستخراجه:",
+        s4_hint: "المفتاح المطلوب هو القيمة المجاورة لـ TARGET_KEY.",
         s4_ph: "المفتاح المستخرج من السجل",
         s4_btn: "تأكيد الكود",
         s4_err: "المفتاح غير مطابق لسجل الأكواد!",
@@ -823,8 +809,8 @@
         s3_ph: "Decoded keyword",
         s3_btn: "Bypass Bytes",
         s3_err: "Byte parsing failure..",
-        s4_desc: "> Security bypass key injected into memory dump. Locate it carefully:",
-        s4_hint: "Target key: Value following dynamic injection token.",
+        s4_desc: "> Bypass key injected inside log stream. Inspect lines carefully:",
+        s4_hint: "Target key is the token value next to TARGET_KEY.",
         s4_ph: "Key extracted from log",
         s4_btn: "Verify Code",
         s4_err: "Key does not match memory dump!",
@@ -896,7 +882,7 @@
     }
 
     // ==========================================
-    // نظام الصوت التلقائي النشط دائماً
+    // نظام الصوت المباشر التلقائي
     // ==========================================
     let audioCtx = null;
 
@@ -964,7 +950,7 @@
     window.addEventListener('touchstart', () => initAudio(), { once: true });
 
     // ==========================================
-    // لوحة تحكم الإدارة مع شريط الأسهم السفلي ★
+    // لوحة تحكم الإدارة (الأسهم السفلية) ★
     // ==========================================
     async function openAdminPanel() {
       const pass = prompt("🔐 لوحة تحكم الإدارة (Aseel):\nادخلي كلمة المرور:");
@@ -973,7 +959,6 @@
         return;
       }
 
-      // إظهار شريط الأسهم العائم أسفل الشاشة
       document.getElementById('adminNavBar').style.display = 'flex';
       soundSuccess();
 
@@ -1002,7 +987,6 @@
       }
     }
 
-    // الانتقال السريع لأي مرحلة
     function jumpToStage(num) {
       currentActiveStage = num;
       document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
@@ -1016,7 +1000,6 @@
         if (targetStage) targetStage.classList.add('active');
       }
 
-      // تحديث القائمة المنسدلة في شريط الأدمن
       const sel = document.getElementById('adminStageSelect');
       if (sel) sel.value = num;
       soundSuccess();
