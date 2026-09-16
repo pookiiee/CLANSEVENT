@@ -33,7 +33,6 @@
       position: relative;
     }
 
-    /* زر تغيير اللغة */
     .lang-toggle-btn {
       position: fixed;
       top: 15px;
@@ -818,7 +817,7 @@
     }
 
     // ==========================================
-    // نظام الصوت المباشر التلقائي (دائماً نشط)
+    // نظام الصوت التلقائي النشط دائماً
     // ==========================================
     let audioCtx = null;
 
@@ -881,46 +880,68 @@
       } catch(e){}
     }
 
-    // تفعيل فوري عند أي نقرة دون قيود
     window.addEventListener('click', () => initAudio(), { once: true });
     window.addEventListener('keydown', () => initAudio(), { once: true });
     window.addEventListener('touchstart', () => initAudio(), { once: true });
 
-    // لوحة تحكم الإدارة ★
+    // ==========================================
+    // لوحة تحكم الإدارة المطورة (الانتقال المباشر لأي مرحلة) ★
+    // ==========================================
     async function openAdminPanel() {
-      const pass = prompt("🔐 Admin Console (Aseel):\nEnter password:");
+      const pass = prompt("🔐 لوحة تحكم الإدارة (Aseel):\nادخلي كلمة المرور:");
       if (pass !== ADMIN_PASSWORD) {
-        alert("❌ Incorrect password!");
+        alert("❌ كلمة المرور غير صحيحة!");
         return;
       }
 
       const choice = prompt(
-        "Select action:\n" +
-        "1: Clear Firebase Leaderboard\n" +
-        "2: Reset game to Stage 1\n" +
-        "3: Clear Server and Reset Game\n" +
-        "4: Open Leaderboard directly"
+        "اختاري الإجراء المطلوب:\n" +
+        "1: الانتقال السريع إلى مرحلة معينة (من 1 إلى 8)\n" +
+        "2: تصفير وحذف قائمة الفائزين من السيرفر (Firebase)\n" +
+        "3: إعادة تصفير اللعبة وإرجاعها للبداية\n" +
+        "4: فتح صفحة لوحة الصدارة مباشرة"
       );
 
-      if (choice === "1" || choice === "3") {
+      if (choice === "1") {
+        const stageNum = prompt("ادخلي رقم المرحلة المطلوبة (1 إلى 8):");
+        const num = parseInt(stageNum);
+        if (num >= 1 && num <= 8) {
+          jumpToStage(num);
+          alert(`✅ تم نقلك مباشرة إلى المرحلة ${num}!`);
+        } else {
+          alert("❌ رقم مرحلة غير صحيح! يرجى إدخال رقم بين 1 و 8.");
+        }
+      } else if (choice === "2") {
         try {
           await fetch(FIREBASE_DB_URL, { method: "DELETE" });
-          alert("✅ Firebase records cleared successfully!");
+          alert("✅ تم مسح وحذف جميع بيانات الفائزين من Firebase بنجاح!");
         } catch(e) {
-          alert("❌ Error connecting to Firebase.");
+          alert("❌ حدث خطأ أثناء تصفير السيرفر.");
         }
-      }
-
-      if (choice === "2" || choice === "3") {
-        document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
-        document.getElementById('stage2').classList.remove('active');
-        document.getElementById('stage1').classList.add('active');
+      } else if (choice === "3") {
+        jumpToStage(1);
         START_TIME = Date.now();
-        alert("✅ Game reset to start!");
-      }
-
-      if (choice === "4") {
+        alert("✅ تم تصفير اللعبة وإرجاع المؤقت والمراحل من الصفر!");
+      } else if (choice === "4") {
         window.location.href = "leaderboard.html";
+      }
+    }
+
+    // دالة الانتقال المباشر لأي مرحلة
+    function jumpToStage(num) {
+      // إخفاء جميع المراحل القياسية
+      document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
+      // إخفاء شاشة المرحلة الثانية (الغرفة المظلمة) بشكل خاص
+      document.getElementById('stage2').classList.remove('active');
+
+      if (num === 2) {
+        document.getElementById('stage2').classList.add('active');
+        initFlashlight();
+      } else {
+        const targetStage = document.getElementById('stage' + num);
+        if (targetStage) {
+          targetStage.classList.add('active');
+        }
       }
     }
 
