@@ -54,6 +54,67 @@
       background: rgba(0, 255, 102, 0.15);
     }
 
+    /* شريط تنقل الأدمن السفلي (الأسهم) */
+    .admin-nav-bar {
+      position: fixed;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000000;
+      background: rgba(2, 12, 5, 0.96);
+      border: 2px solid var(--term);
+      border-radius: 30px;
+      padding: 6px 18px;
+      display: none;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 0 25px rgba(0, 255, 102, 0.5);
+      direction: ltr;
+    }
+
+    .admin-nav-btn {
+      background: transparent;
+      border: 1px solid var(--term);
+      color: var(--term);
+      font-size: 1.2rem;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+
+    .admin-nav-btn:hover {
+      background: var(--term);
+      color: #000;
+      box-shadow: 0 0 10px var(--term);
+    }
+
+    .admin-stage-select {
+      background: #020904;
+      color: var(--term);
+      border: 1px solid var(--term-dim);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .admin-close-nav {
+      background: transparent;
+      border: none;
+      color: var(--alert);
+      font-size: 1.1rem;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+
     #matrixCanvas {
       position: fixed;
       top: 0; left: 0;
@@ -289,7 +350,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      padding-bottom: 45px;
+      padding-bottom: 70px;
     }
 
     #stage2.active { display: flex !important; }
@@ -469,6 +530,23 @@
   <canvas id="matrixCanvas"></canvas>
   <div class="scanlines"></div>
 
+  <!-- شريط أسهم التحكم الخاص بالأدمن في أسفل الشاشة -->
+  <div class="admin-nav-bar" id="adminNavBar">
+    <button class="admin-nav-btn" onclick="prevStageAdmin()" title="المرحلة السابقة">◀</button>
+    <select class="admin-stage-select" id="adminStageSelect" onchange="jumpToStage(parseInt(this.value))">
+      <option value="1">المرحلة 1 (مورس)</option>
+      <option value="2">المرحلة 2 (الغرفة المظلمة)</option>
+      <option value="3">المرحلة 3 (باينري)</option>
+      <option value="4">المرحلة 4 (سجل الأكواد)</option>
+      <option value="5">المرحلة 5 (خزائن الديسكورد)</option>
+      <option value="6">المرحلة 6 (التيرمينال)</option>
+      <option value="7">المرحلة 7 (الروابط)</option>
+      <option value="8">المرحلة 8 (تسجيل الفوز)</option>
+    </select>
+    <button class="admin-nav-btn" onclick="nextStageAdmin()" title="المرحلة التالية">▶</button>
+    <button class="admin-close-nav" onclick="closeAdminNav()" title="إغلاق الشريط">✖</button>
+  </div>
+
   <!-- شاشة الحظر 20 ثانية -->
   <div class="lockout-screen" id="lockoutScreen">
     <svg class="svg-icon" style="width: 52px; height: 52px; margin-bottom: 14px;" viewBox="0 0 24 24">
@@ -484,7 +562,7 @@
       <h1 class="main-title">POOKIE HACK</h1>
       <div class="author-credit">
         made by aseel 
-        <span class="admin-star" onclick="openAdminPanel()" title="Admin Reset">★</span>
+        <span class="admin-star" onclick="openAdminPanel()" title="Admin Navigator">★</span>
       </div>
     </div>
 
@@ -680,6 +758,7 @@
 
   <script>
     let START_TIME = Date.now();
+    let currentActiveStage = 1;
     const FIREBASE_DB_URL = "https://hack-d1f55-default-rtdb.firebaseio.com/winners.json";
     const ADMIN_PASSWORD = "admin123";
 
@@ -885,7 +964,7 @@
     window.addEventListener('touchstart', () => initAudio(), { once: true });
 
     // ==========================================
-    // لوحة تحكم الإدارة المطورة (الانتقال المباشر لأي مرحلة) ★
+    // لوحة تحكم الإدارة مع شريط الأسهم السفلي ★
     // ==========================================
     async function openAdminPanel() {
       const pass = prompt("🔐 لوحة تحكم الإدارة (Aseel):\nادخلي كلمة المرور:");
@@ -894,44 +973,39 @@
         return;
       }
 
+      // إظهار شريط الأسهم العائم أسفل الشاشة
+      document.getElementById('adminNavBar').style.display = 'flex';
+      soundSuccess();
+
       const choice = prompt(
-        "اختاري الإجراء المطلوب:\n" +
-        "1: الانتقال السريع إلى مرحلة معينة (من 1 إلى 8)\n" +
-        "2: تصفير وحذف قائمة الفائزين من السيرفر (Firebase)\n" +
-        "3: إعادة تصفير اللعبة وإرجاعها للبداية\n" +
-        "4: فتح صفحة لوحة الصدارة مباشرة"
+        "تم تفعيل شريط الأسهم في أسفل الشاشة للتنقل السريع!\n\n" +
+        "خيارات إضافية:\n" +
+        "1: تصفير وحذف قائمة الفائزين من السيرفر (Firebase)\n" +
+        "2: إعادة تصفير اللعبة للبداية\n" +
+        "3: فتح صفحة لوحة الصدارة مباشرة\n" +
+        "أو اضغطي إلغاء لمتابعة اللعب واستخدام الأسهم."
       );
 
       if (choice === "1") {
-        const stageNum = prompt("ادخلي رقم المرحلة المطلوبة (1 إلى 8):");
-        const num = parseInt(stageNum);
-        if (num >= 1 && num <= 8) {
-          jumpToStage(num);
-          alert(`✅ تم نقلك مباشرة إلى المرحلة ${num}!`);
-        } else {
-          alert("❌ رقم مرحلة غير صحيح! يرجى إدخال رقم بين 1 و 8.");
-        }
-      } else if (choice === "2") {
         try {
           await fetch(FIREBASE_DB_URL, { method: "DELETE" });
           alert("✅ تم مسح وحذف جميع بيانات الفائزين من Firebase بنجاح!");
         } catch(e) {
           alert("❌ حدث خطأ أثناء تصفير السيرفر.");
         }
-      } else if (choice === "3") {
+      } else if (choice === "2") {
         jumpToStage(1);
         START_TIME = Date.now();
         alert("✅ تم تصفير اللعبة وإرجاع المؤقت والمراحل من الصفر!");
-      } else if (choice === "4") {
+      } else if (choice === "3") {
         window.location.href = "leaderboard.html";
       }
     }
 
-    // دالة الانتقال المباشر لأي مرحلة
+    // الانتقال السريع لأي مرحلة
     function jumpToStage(num) {
-      // إخفاء جميع المراحل القياسية
+      currentActiveStage = num;
       document.querySelectorAll('.stage').forEach(el => el.classList.remove('active'));
-      // إخفاء شاشة المرحلة الثانية (الغرفة المظلمة) بشكل خاص
       document.getElementById('stage2').classList.remove('active');
 
       if (num === 2) {
@@ -939,10 +1013,29 @@
         initFlashlight();
       } else {
         const targetStage = document.getElementById('stage' + num);
-        if (targetStage) {
-          targetStage.classList.add('active');
-        }
+        if (targetStage) targetStage.classList.add('active');
       }
+
+      // تحديث القائمة المنسدلة في شريط الأدمن
+      const sel = document.getElementById('adminStageSelect');
+      if (sel) sel.value = num;
+      soundSuccess();
+    }
+
+    function nextStageAdmin() {
+      if (currentActiveStage < 8) {
+        jumpToStage(currentActiveStage + 1);
+      }
+    }
+
+    function prevStageAdmin() {
+      if (currentActiveStage > 1) {
+        jumpToStage(currentActiveStage - 1);
+      }
+    }
+
+    function closeAdminNav() {
+      document.getElementById('adminNavBar').style.display = 'none';
     }
 
     // مصفوفة الماتريكس
@@ -979,9 +1072,7 @@
       const val = document.getElementById('stage1Input').value.trim().toUpperCase();
       if (val === "BREACH") {
         soundSuccess();
-        document.getElementById('stage1').classList.remove('active');
-        document.getElementById('stage2').classList.add('active');
-        initFlashlight();
+        jumpToStage(2);
       } else {
         soundError();
         document.getElementById('stage1Err').textContent = translations[currentLang].s1_err;
@@ -1005,8 +1096,7 @@
       const val = document.getElementById('doorInput').value.trim().toUpperCase();
       if (val === "9340K8") {
         soundSuccess();
-        document.getElementById('stage2').classList.remove('active');
-        document.getElementById('stage3').classList.add('active');
+        jumpToStage(3);
       } else {
         soundError();
         document.getElementById('stage2Err').textContent = translations[currentLang].s2_err;
@@ -1018,8 +1108,7 @@
       const val = document.getElementById('stage3Input').value.trim().toUpperCase();
       if (val === "ROOT") {
         soundSuccess();
-        document.getElementById('stage3').classList.remove('active');
-        document.getElementById('stage4').classList.add('active');
+        jumpToStage(4);
       } else {
         soundError();
         document.getElementById('stage3Err').textContent = translations[currentLang].s3_err;
@@ -1031,8 +1120,7 @@
       const val = document.getElementById('stage4Input').value.trim();
       if (val === "DOM_BYPASS_99") {
         soundSuccess();
-        document.getElementById('stage4').classList.remove('active');
-        document.getElementById('stage5').classList.add('active');
+        jumpToStage(5);
       } else {
         soundError();
         document.getElementById('stage4Err').textContent = translations[currentLang].s4_err;
@@ -1108,8 +1196,7 @@
       
       if (val === "KEY-CHRONO") {
         soundSuccess();
-        document.getElementById('stage5').classList.remove('active');
-        document.getElementById('stage6').classList.add('active');
+        jumpToStage(6);
       } else if (val === "KEY-VORTEX" || val === "KEY-NEXUS") {
         soundError();
         err.textContent = translations[currentLang].s5_door_err_bad;
@@ -1141,8 +1228,7 @@
           soundSuccess();
           cliHistory.innerHTML += `<div style="color:#73ffaa;">${(currentLang === 'ar') ? 'تم الفتح! جاري تحويلك...' : 'Access Granted! Routing...'}</div>`;
           setTimeout(() => {
-            document.getElementById('stage6').classList.remove('active');
-            document.getElementById('stage7').classList.add('active');
+            jumpToStage(7);
           }, 1000);
         } else {
           soundError();
@@ -1172,8 +1258,7 @@
 
     function goToStage8() {
       soundSuccess();
-      document.getElementById('stage7').classList.remove('active');
-      document.getElementById('stage8').classList.add('active');
+      jumpToStage(8);
     }
 
     // المرحلة 8: تسجيل الفوز
