@@ -500,6 +500,22 @@
       margin: 0 4px;
     }
 
+    /* صندوق التنبيه الأمني الأحمر */
+    .red-warning-banner {
+      background: rgba(255, 34, 51, 0.12);
+      border: 1px solid var(--alert);
+      color: var(--alert);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin: 12px auto 16px auto;
+      max-width: 600px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255, 34, 51, 0.25);
+    }
+
     /* لوحة النهاية */
     .victory-container {
       background: rgba(0, 25, 10, 0.6);
@@ -608,7 +624,7 @@
       </div>
     </div>
 
-    <!-- المرحلة 4: سجل الأكواد (المعدلة للأسهل) -->
+    <!-- المرحلة 4: سجل الأكواد -->
     <div class="stage" id="stage4">
       <div class="laptop-frame">
         <div class="laptop-screen">
@@ -692,10 +708,16 @@
       </div>
     </div>
 
-    <!-- المرحلة 7: الروابط المموهة -->
+    <!-- المرحلة 7: الروابط المموهة والتنبيه الأحمر -->
     <div class="stage" id="stage7">
       <div class="notepad">
-        <p style="color: var(--term-dim); margin-bottom: 12px; text-align: inherit;">> SYSTEM_BACKUP_ACCESS.LOG</p>
+        <p style="color: var(--term-dim); margin-bottom: 8px; text-align: inherit;">> SYSTEM_BACKUP_ACCESS.LOG</p>
+        
+        <!-- التنبيه الأمني باللون الأحمر -->
+        <div class="red-warning-banner" id="t_s7_warning">
+          ⚠️ تحذير أمني: في حال تم اختيار رابط خاطئ سيتم حظركِ فوراً لمدة 20 ثانية!
+        </div>
+
         <span style="color: #006629;">// SYSTEM ADVISORY: TUNNEL CONNECTS TO SECURE PORT :1337 ONLY.</span><br><br>
         0x9A44 <span class="exact-link" onclick="triggerLockout()">https://pookie-core.sys:8080/token</span> 
         $$#% 99201 <span class="exact-link" onclick="triggerLockout()">https://pookie-auth.net:3000/token</span> 
@@ -785,6 +807,7 @@
         s5_door_err_bad: "المفتاح غير صالح للقفل! جربي المفتاح الآخر.",
         s5_door_err_invalid: "كود غير مطابق لأي مفتاح قمتِ بجمعه!",
         cli_welcome: "POOKIE SECURITY CONSOLE v3.1. اكتبي <b>help</b> لعرض الأوامر.",
+        s7_warning: "⚠️ تحذير أمني: في حال تم اختيار رابط خاطئ سيتم حظركِ فوراً لمدة 20 ثانية!",
         v1: "تم اجتياز جميع العقبات بنجاح!",
         v2: "ادخلي اسمك واسم كلانك ليتم رفع نتيجتك وحساب وقتك بالثانية على لوحة الصدارة العامة:",
         submit_ph: "اسمك واسم كلانك (مثال: اسيل [POOKIE])",
@@ -826,6 +849,7 @@
         s5_door_err_bad: "Key rejected by cipher gate! Try another key.",
         s5_door_err_invalid: "Code does not match any collected key!",
         cli_welcome: "POOKIE SECURITY CONSOLE v3.1. Type <b>help</b> for commands.",
+        s7_warning: "⚠️ SECURITY WARNING: Selecting the wrong link triggers an immediate 20s system lockout!",
         v1: "All security barriers bypassed successfully!",
         v2: "Enter your name and Clan tag to submit your live score to the leaderboard:",
         submit_ph: "Name and Clan (e.g., Aseel [POOKIE])",
@@ -872,6 +896,8 @@
       document.getElementById('t_s5_doorHint').textContent = t.s5_doorHint;
       document.getElementById('finalKeyInput').placeholder = t.s5_door_ph;
       document.getElementById('t_s5_doorBtn').textContent = t.s5_doorBtn;
+
+      document.getElementById('t_s7_warning').textContent = t.s7_warning;
 
       document.getElementById('t_v1').textContent = t.v1;
       document.getElementById('t_v2').textContent = t.v2;
